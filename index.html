@@ -1,0 +1,4049 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>医疗行业零售智能体 · 全景图</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f3ef;
+  --bg2: #eceae4;
+  --bg3: #e3e0d8;
+  --ink: #1a1916;
+  --ink2: #4a4844;
+  --ink3: #8a8880;
+  --accent: #1a6b4a;
+  --accent2: #2d8c63;
+  --accent-light: #d4ede4;
+  --teal: #0f6e6e;
+  --teal-l: #d0ecec;
+  --blue: #1a4a7a;
+  --blue-l: #d4e4f4;
+  --amber: #7a4a0a;
+  --amber-l: #f4e4c0;
+  --coral: #8a2a1a;
+  --coral-l: #f4d4cc;
+  --green: #1a5a2a;
+  --green-l: #d4ecda;
+  --purple: #4a1a7a;
+  --purple-l: #e4d4f4;
+  --pink: #7a1a4a;
+  --pink-l: #f4d4e4;
+  --red: #8a1a1a;
+  --red-l: #f4d4d4;
+  --border: #d8d5cd;
+  --r: 10px;
+  --r-lg: 18px;
+  font-size: 15px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── PAGE SYSTEM ─── */
+.page { display: none; min-height: 100vh; animation: fadeIn .35s ease; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+/* ─── HEADER ─── */
+header {
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--ink3);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.back-btn {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--ink2);
+  cursor: pointer;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: transparent;
+  transition: all .2s;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+.back-btn:hover { background: var(--bg2); border-color: var(--ink3); }
+.back-btn.show { display: flex; }
+.back-arrow { font-size: 16px; }
+
+/* ─── HOME PAGE ─── */
+.home-hero {
+  padding: 60px 40px 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.hero-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.hero-title {
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+.hero-sub {
+  font-size: 15px;
+  color: var(--ink2);
+  max-width: 560px;
+  line-height: 1.7;
+}
+
+/* ─── SCENE MAP ─── */
+.scene-map {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 40px 60px;
+}
+
+.map-core {
+  background: var(--ink);
+  color: #f5f3ef;
+  border-radius: var(--r-lg);
+  padding: 20px 28px;
+  text-align: center;
+  margin-bottom: 32px;
+  position: relative;
+}
+.map-core-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.map-core-sub { font-size: 12px; opacity: .6; font-family: 'DM Mono', monospace; letter-spacing: .05em; }
+.map-core-tags {
+  display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 12px;
+}
+.map-core-tag {
+  font-size: 11px; padding: 3px 10px; border-radius: 20px;
+  background: rgba(255,255,255,.12); color: rgba(255,255,255,.8);
+  font-family: 'DM Mono', monospace;
+}
+
+.connector-area {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 40px;
+  position: relative;
+  margin-bottom: -1px;
+}
+.connector-line {
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+  background: var(--border);
+}
+
+/* Main scene grid */
+.scenes-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.scene-card {
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 18px 16px;
+  cursor: pointer;
+  transition: all .22s cubic-bezier(.4,0,.2,1);
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+.scene-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  opacity: 0;
+  transition: opacity .22s;
+}
+.scene-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+.scene-card:hover::before { opacity: 1; }
+.scene-card:active { transform: translateY(-1px); }
+
+.sc-icon { font-size: 22px; margin-bottom: 10px; }
+.sc-num {
+  position: absolute; top: 12px; right: 14px;
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  color: var(--ink3);
+}
+.sc-title { font-size: 14px; font-weight: 700; line-height: 1.3; margin-bottom: 6px; }
+.sc-desc { font-size: 11px; color: var(--ink2); line-height: 1.5; }
+.sc-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 10px; }
+.sc-tag {
+  font-size: 10px; padding: 2px 7px; border-radius: 10px;
+  font-family: 'DM Mono', monospace;
+}
+.sc-arrow {
+  position: absolute; bottom: 14px; right: 14px;
+  font-size: 14px; opacity: 0;
+  transition: opacity .2s, transform .2s;
+}
+.scene-card:hover .sc-arrow { opacity: 1; transform: translateX(2px); }
+
+/* scene colors */
+.sc-teal { border-color: var(--teal); }
+.sc-teal::before { background: var(--teal-l); }
+.sc-teal .sc-tag { background: var(--teal-l); color: var(--teal); }
+.sc-teal .sc-icon { color: var(--teal); }
+
+.sc-blue { border-color: var(--blue); }
+.sc-blue::before { background: var(--blue-l); }
+.sc-blue .sc-tag { background: var(--blue-l); color: var(--blue); }
+.sc-blue .sc-icon { color: var(--blue); }
+
+.sc-amber { border-color: #b07020; }
+.sc-amber::before { background: var(--amber-l); }
+.sc-amber .sc-tag { background: var(--amber-l); color: var(--amber); }
+.sc-amber .sc-icon { color: var(--amber); }
+
+.sc-coral { border-color: #b04030; }
+.sc-coral::before { background: var(--coral-l); }
+.sc-coral .sc-tag { background: var(--coral-l); color: var(--coral); }
+.sc-coral .sc-icon { color: var(--coral); }
+
+.sc-green { border-color: var(--green); }
+.sc-green::before { background: var(--green-l); }
+.sc-green .sc-tag { background: var(--green-l); color: var(--green); }
+.sc-green .sc-icon { color: var(--green); }
+
+/* Tech layers */
+.tech-section { margin-top: 10px; }
+.tech-label {
+  font-size: 11px; color: var(--ink3); margin-bottom: 10px;
+  font-family: 'DM Mono', monospace; letter-spacing: .08em; text-transform: uppercase;
+}
+.tech-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px; }
+.tech-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 14px;
+}
+.tech-card-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.tech-card-items { display: flex; flex-direction: column; gap: 5px; }
+.tech-item { font-size: 11px; color: var(--ink2); display: flex; align-items: center; gap: 6px; }
+.tech-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; background: var(--ink3); }
+
+.sys-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 10px; }
+.sys-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 12px 10px; text-align: center;
+  cursor: pointer; transition: all .2s;
+}
+.sys-card:hover { background: var(--bg3); }
+.sys-card-icon { font-size: 18px; margin-bottom: 5px; }
+.sys-card-title { font-size: 11px; color: var(--ink2); }
+
+.compliance-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.comp-card { border-radius: var(--r); padding: 14px; }
+.comp-card-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.comp-card-desc { font-size: 11px; line-height: 1.5; opacity: .85; }
+.comp-red { background: var(--red-l); color: var(--red); }
+.comp-amber { background: var(--amber-l); color: var(--amber); }
+.comp-blue { background: var(--blue-l); color: var(--blue); }
+.comp-green { background: var(--green-l); color: var(--green); }
+
+/* ─── DETAIL PAGE ─── */
+.detail-page { max-width: 960px; margin: 0 auto; padding: 48px 40px 80px; }
+
+.detail-hero {
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+}
+.detail-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-family: 'DM Mono', monospace;
+  padding: 5px 12px; border-radius: 20px; margin-bottom: 20px;
+  letter-spacing: .06em;
+}
+.detail-title { font-size: 32px; font-weight: 700; margin-bottom: 12px; line-height: 1.2; }
+.detail-sub { font-size: 15px; color: var(--ink2); line-height: 1.7; max-width: 640px; }
+
+.section { margin-bottom: 44px; }
+.section-label {
+  font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ink3);
+  text-transform: uppercase; letter-spacing: .12em; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.section-title { font-size: 20px; font-weight: 700; margin-bottom: 16px; }
+
+/* Product design section */
+.product-stages {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+}
+.stage-card {
+  background: var(--bg2); border-radius: var(--r);
+  padding: 18px; border: 1px solid var(--border);
+}
+.stage-num {
+  font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ink3); margin-bottom: 8px;
+}
+.stage-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.stage-list { list-style: none; }
+.stage-list li {
+  font-size: 12px; color: var(--ink2); padding: 5px 0;
+  border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 7px; line-height: 1.5;
+}
+.stage-list li:last-child { border-bottom: none; }
+.stage-list li::before { content: '—'; color: var(--ink3); flex-shrink: 0; font-family: 'DM Mono', monospace; }
+
+/* Feature breakdown */
+.features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.feature-card {
+  border-radius: var(--r); padding: 20px;
+  border: 1px solid transparent;
+}
+.feature-icon { font-size: 20px; margin-bottom: 10px; }
+.feature-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.feature-items { list-style: none; }
+.feature-items li { font-size: 12px; padding: 4px 0; color: var(--ink2); display: flex; gap: 7px; line-height: 1.5; }
+.feature-items li::before { content: '·'; flex-shrink: 0; font-weight: 700; }
+
+/* Tech architecture */
+.arch-flow {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 28px; overflow: hidden;
+}
+.arch-layer {
+  display: grid; margin-bottom: 0;
+}
+.arch-layer-title {
+  font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink3);
+  text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px;
+}
+.arch-nodes { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.arch-node {
+  font-size: 12px; padding: 6px 14px; border-radius: 20px;
+  background: var(--bg); border: 1px solid var(--border);
+  color: var(--ink2); white-space: nowrap;
+}
+.arch-node.highlight {
+  background: var(--ink); color: #f5f3ef; border-color: var(--ink);
+  font-weight: 500;
+}
+.arch-arrow {
+  text-align: center; color: var(--ink3); font-size: 18px; margin: 4px 0 12px;
+  font-family: 'DM Mono', monospace;
+}
+
+/* Roadmap */
+.roadmap { display: flex; flex-direction: column; gap: 0; }
+.roadmap-item {
+  display: flex; gap: 20px; align-items: flex-start;
+}
+.roadmap-left { display: flex; flex-direction: column; align-items: center; width: 32px; flex-shrink: 0; }
+.roadmap-dot {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500;
+  color: #fff; flex-shrink: 0; margin-top: 3px;
+}
+.roadmap-line { width: 1px; flex: 1; background: var(--border); margin: 6px 0; min-height: 24px; }
+.roadmap-item:last-child .roadmap-line { display: none; }
+.roadmap-content { flex: 1; padding-bottom: 24px; }
+.roadmap-phase {
+  font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink3);
+  text-transform: uppercase; letter-spacing: .1em; margin-bottom: 4px;
+}
+.roadmap-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.roadmap-desc { font-size: 12px; color: var(--ink2); line-height: 1.6; }
+.roadmap-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.roadmap-tag {
+  font-size: 10px; padding: 2px 8px; border-radius: 10px;
+  background: var(--bg2); color: var(--ink2); border: 1px solid var(--border);
+  font-family: 'DM Mono', monospace;
+}
+
+/* KPI metrics */
+.metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.metric-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 16px; text-align: center;
+}
+.metric-val { font-size: 22px; font-weight: 700; font-family: 'DM Mono', monospace; }
+.metric-label { font-size: 11px; color: var(--ink2); margin-top: 4px; line-height: 1.4; }
+
+/* ─── SCENE NAV ─── */
+.scene-nav {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 32px;
+  padding: 14px 16px; background: var(--bg2);
+  border-radius: var(--r); border: 1px solid var(--border);
+}
+.scene-nav-label {
+  font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink3);
+  text-transform: uppercase; letter-spacing: .1em;
+  display: flex; align-items: center; margin-right: 6px; white-space: nowrap;
+}
+.scene-nav-btn {
+  font-size: 11px; padding: 4px 12px; border-radius: 14px;
+  border: 1px solid var(--border); background: var(--bg);
+  color: var(--ink2); cursor: pointer; transition: all .18s;
+  font-family: 'Noto Sans SC', sans-serif; white-space: nowrap;
+}
+.scene-nav-btn:hover { background: var(--ink); color: #f5f3ef; border-color: var(--ink); }
+
+/* ─── RISK SECTION ─── */
+.risk-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.risk-card {
+  border-radius: var(--r); padding: 16px;
+  border-left: 3px solid; background: var(--bg2);
+}
+.risk-card-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 7px; }
+.risk-card-desc { font-size: 12px; color: var(--ink2); line-height: 1.6; }
+.risk-card-solution { font-size: 11px; margin-top: 8px; padding: 6px 10px; border-radius: 6px; background: rgba(255,255,255,.6); }
+.risk-card-solution strong { font-size: 10px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .05em; display: block; margin-bottom: 2px; color: var(--ink3); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .scenes-grid { grid-template-columns: repeat(2, 1fr); }
+  .tech-grid { grid-template-columns: 1fr; }
+  .sys-grid { grid-template-columns: repeat(3, 1fr); }
+  .compliance-grid { grid-template-columns: repeat(2, 1fr); }
+  .product-stages { grid-template-columns: 1fr; }
+  .features-grid { grid-template-columns: 1fr; }
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  header { padding: 16px 20px; }
+  .home-hero, .scene-map { padding-left: 20px; padding-right: 20px; }
+  .detail-page { padding: 32px 20px 60px; }
+  .hero-title { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div class="logo">Medical · Retail · Agent · 2026 &nbsp;·&nbsp; 赵永明 · AI产品经理</div>
+  <button class="back-btn" id="backBtn" onclick="goHome()">
+    <span class="back-arrow">←</span> 返回全景图
+  </button>
+</header>
+
+<!-- ═══════════════════════════════════════════
+     HOME PAGE
+═══════════════════════════════════════════ -->
+<div class="page active" id="home">
+
+  <div class="home-hero">
+    <div class="hero-label">全景架构图 · Healthcare Retail Agent</div>
+    <h1 class="hero-title">医疗行业零售智能体<br>应用场景全景</h1>
+    <p class="hero-sub">覆盖药品导购、慢病管理、器械选购、处方配送、院外随访五大核心场景，以及底层技术架构与合规要点。点击任意场景深入了解。</p>
+  </div>
+
+  <div class="scene-map">
+
+    <!-- 智能体核心 -->
+    <div class="map-core">
+      <div class="map-core-title">🤖 医疗零售智能体 · 核心引擎</div>
+      <div class="map-core-sub">Intent Recognition · RAG · Safety Guard · Response Generation</div>
+      <div class="map-core-tags">
+        <span class="map-core-tag">意图识别</span>
+        <span class="map-core-tag">知识检索 RAG</span>
+        <span class="map-core-tag">安全审核层</span>
+        <span class="map-core-tag">个性化响应</span>
+        <span class="map-core-tag">多轮对话管理</span>
+      </div>
+    </div>
+
+    <!-- 5大场景 -->
+    <div class="scenes-grid">
+
+      <div class="scene-card sc-teal" onclick="showScene('pharmacy')">
+        <span class="sc-num">01</span>
+        <div class="sc-icon">💊</div>
+        <div class="sc-title">药品智能导购</div>
+        <div class="sc-desc">症状描述→OTC推荐，药品知识问答，安全禁忌提示</div>
+        <div class="sc-tags">
+          <span class="sc-tag">症状解析</span>
+          <span class="sc-tag">知识库</span>
+          <span class="sc-tag">安全拦截</span>
+        </div>
+        <span class="sc-arrow">→</span>
+      </div>
+
+      <div class="scene-card sc-blue" onclick="showScene('chronic')">
+        <span class="sc-num">02</span>
+        <div class="sc-icon">📋</div>
+        <div class="sc-title">慢病用药管理</div>
+        <div class="sc-desc">糖尿病/高血压患者长期用药提醒、续药、依从性管理</div>
+        <div class="sc-tags">
+          <span class="sc-tag">用药档案</span>
+          <span class="sc-tag">智能提醒</span>
+          <span class="sc-tag">续药</span>
+        </div>
+        <span class="sc-arrow">→</span>
+      </div>
+
+      <div class="scene-card sc-amber" onclick="showScene('device')">
+        <span class="sc-num">03</span>
+        <div class="sc-icon">🩺</div>
+        <div class="sc-title">器械选购助手</div>
+        <div class="sc-desc">血糖仪、血压计等家用医疗器械选型咨询与购买引导</div>
+        <div class="sc-tags">
+          <span class="sc-tag">参数对比</span>
+          <span class="sc-tag">人群匹配</span>
+          <span class="sc-tag">下单</span>
+        </div>
+        <span class="sc-arrow">→</span>
+      </div>
+
+      <div class="scene-card sc-coral" onclick="showScene('prescription')">
+        <span class="sc-num">04</span>
+        <div class="sc-icon">📦</div>
+        <div class="sc-title">处方药配送</div>
+        <div class="sc-desc">电子处方对接、AI辅助审方、调配调度、冷链物流追踪</div>
+        <div class="sc-tags">
+          <span class="sc-tag">电子处方</span>
+          <span class="sc-tag">AI审方</span>
+          <span class="sc-tag">冷链</span>
+        </div>
+        <span class="sc-arrow">→</span>
+      </div>
+
+      <div class="scene-card sc-green" onclick="showScene('followup')">
+        <span class="sc-num">05</span>
+        <div class="sc-icon">🏥</div>
+        <div class="sc-title">院外患者随访</div>
+        <div class="sc-desc">术后/出院患者定期随访、康复指导、异常指标上报</div>
+        <div class="sc-tags">
+          <span class="sc-tag">随访问卷</span>
+          <span class="sc-tag">指标监测</span>
+          <span class="sc-tag">医生推送</span>
+        </div>
+        <span class="sc-arrow">→</span>
+      </div>
+
+    </div>
+
+    <!-- 技术支撑层 -->
+    <div class="tech-section">
+      <div class="tech-label">底层技术支撑</div>
+      <div class="tech-grid">
+        <div class="tech-card">
+          <div class="tech-card-title">📚 数据与知识层</div>
+          <div class="tech-card-items">
+            <div class="tech-item"><span class="tech-dot" style="background:var(--purple)"></span>药品说明书知识库（RAG）</div>
+            <div class="tech-item"><span class="tech-dot" style="background:var(--purple)"></span>症状—适应症映射模型</div>
+            <div class="tech-item"><span class="tech-dot" style="background:var(--purple)"></span>患者健康档案（EHR）</div>
+            <div class="tech-item"><span class="tech-dot" style="background:var(--purple)"></span>医学指南&诊疗规范</div>
+          </div>
+        </div>
+        <div class="tech-card">
+          <div class="tech-card-title">🧠 模型与推理层</div>
+          <div class="tech-card-items">
+            <div class="tech-item"><span class="tech-dot" style="background:var(--blue)"></span>LLM + RAG 检索增强</div>
+            <div class="tech-item"><span class="tech-dot" style="background:var(--blue)"></span>意图分类 Fine-tuning</div>
+            <div class="tech-item"><span class="tech-dot" style="background:var(--blue)"></span>协同过滤推荐算法</div>
+            <div class="tech-item"><span class="tech-dot" style="background:var(--blue)"></span>OCR 票据识别模型</div>
+          </div>
+        </div>
+        <div class="tech-card">
+          <div class="tech-card-title">🛡 安全与合规层</div>
+          <div class="tech-card-items">
+            <div class="tech-item"><span class="tech-dot" style="background:var(--coral)"></span>严重症状强制就医导流</div>
+            <div class="tech-item"><span class="tech-dot" style="background:var(--coral)"></span>敏感词&违规内容过滤</div>
+            <div class="tech-item"><span class="tech-dot" style="background:var(--coral)"></span>处方药分级权限管控</div>
+            <div class="tech-item"><span class="tech-dot" style="background:var(--coral)"></span>数据脱敏&等保三级</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 业务系统 -->
+      <div class="tech-label" style="margin-top:16px">业务系统集成</div>
+      <div class="sys-grid">
+        <div class="sys-card"><div class="sys-card-icon">🏨</div><div class="sys-card-title">HIS / EHR</div></div>
+        <div class="sys-card"><div class="sys-card-icon">🛒</div><div class="sys-card-title">电商平台</div></div>
+        <div class="sys-card"><div class="sys-card-icon">💳</div><div class="sys-card-title">支付系统</div></div>
+        <div class="sys-card"><div class="sys-card-icon">🚚</div><div class="sys-card-title">物流冷链</div></div>
+        <div class="sys-card"><div class="sys-card-icon">📑</div><div class="sys-card-title">保险理赔</div></div>
+      </div>
+
+      <!-- 合规 -->
+      <div class="tech-label" style="margin-top:16px">关键合规要点</div>
+      <div class="compliance-grid">
+        <div class="comp-card comp-red">
+          <div class="comp-card-title">🚫 处方药管控</div>
+          <div class="comp-card-desc">OTC与Rx严格区分，处方药不得在无处方情况下销售推荐</div>
+        </div>
+        <div class="comp-card comp-amber">
+          <div class="comp-card-title">⚠️ 就医导流</div>
+          <div class="comp-card-desc">重症、急症、不明原因症状强制引导用户线下就医</div>
+        </div>
+        <div class="comp-card comp-blue">
+          <div class="comp-card-title">🔒 数据隐私</div>
+          <div class="comp-card-desc">等保三级认证，健康数据脱敏，用户授权管理</div>
+        </div>
+        <div class="comp-card comp-green">
+          <div class="comp-card-title">👨‍⚕️ 专业兜底</div>
+          <div class="comp-card-desc">药师/医师审核机制，AI输出内容不可替代医疗诊断</div>
+        </div>
+      </div>
+    </div>
+
+      <!-- 延伸场景 -->
+      <div class="tech-label" style="margin-top:16px">延伸应用场景</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px">
+        <div class="scene-card sc-pink" onclick="showScene('personalized')" style="padding:16px">
+          <span class="sc-num">06</span>
+          <div class="sc-icon" style="font-size:18px;margin-bottom:8px">🧬</div>
+          <div class="sc-title" style="font-size:13px">个性化健康推荐</div>
+          <div class="sc-desc">基于健康档案与历史购药记录，驱动个性化商品与健康内容推荐</div>
+          <div class="sc-tags"><span class="sc-tag" style="background:var(--pink-l);color:var(--pink)">健康画像</span><span class="sc-tag" style="background:var(--pink-l);color:var(--pink)">协同过滤</span></div>
+          <span class="sc-arrow">→</span>
+        </div>
+        <div class="scene-card" style="border-color:var(--purple);padding:16px" onclick="showScene('insurance')">
+          <span class="sc-num">07</span>
+          <div class="sc-icon" style="font-size:18px;margin-bottom:8px;color:var(--purple)">📑</div>
+          <div class="sc-title" style="font-size:13px">保险理赔辅助</div>
+          <div class="sc-desc">OCR票据识别、条款智能匹配、理赔进度全程跟踪</div>
+          <div class="sc-tags"><span class="sc-tag" style="background:var(--purple-l);color:var(--purple)">OCR识别</span><span class="sc-tag" style="background:var(--purple-l);color:var(--purple)">条款匹配</span></div>
+          <span class="sc-arrow">→</span>
+        </div>
+        <div class="scene-card sc-teal" onclick="showScene('nutrition')" style="padding:16px">
+          <span class="sc-num">08</span>
+          <div class="sc-icon" style="font-size:18px;margin-bottom:8px">🥗</div>
+          <div class="sc-title" style="font-size:13px">营养健康管理</div>
+          <div class="sc-desc">膳食记录、运动追踪、体重管理，结合病情给出个性化健康计划</div>
+          <div class="sc-tags"><span class="sc-tag">膳食分析</span><span class="sc-tag">运动追踪</span></div>
+          <span class="sc-arrow">→</span>
+        </div>
+        <div class="scene-card sc-pink" onclick="showScene('maternalinfant')" style="padding:16px">
+          <span class="sc-num">09</span>
+          <div class="sc-icon" style="font-size:18px;margin-bottom:8px">🤰</div>
+          <div class="sc-title" style="font-size:13px">母婴健康管理</div>
+          <div class="sc-desc">孕期营养指导、婴幼儿产品选购、产后康复全程陪伴</div>
+          <div class="sc-tags"><span class="sc-tag" style="background:var(--pink-l);color:var(--pink)">孕期管理</span><span class="sc-tag" style="background:var(--pink-l);color:var(--pink)">婴幼选购</span></div>
+          <span class="sc-arrow">→</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:0">
+        <div class="scene-card sc-blue" onclick="showScene('labreport')" style="padding:16px">
+          <span class="sc-num">10</span>
+          <div class="sc-icon" style="font-size:18px;margin-bottom:8px">🔬</div>
+          <div class="sc-title" style="font-size:13px">检验报告智能解读</div>
+          <div class="sc-desc">体检/化验报告指标解析，异常预警，关联产品与就医建议</div>
+          <div class="sc-tags"><span class="sc-tag" style="background:var(--blue-l);color:var(--blue)">报告解析</span><span class="sc-tag" style="background:var(--blue-l);color:var(--blue)">异常预警</span></div>
+          <span class="sc-arrow">→</span>
+        </div>
+        <div class="scene-card sc-amber" onclick="showScene('tcm')" style="padding:16px">
+          <span class="sc-num">11</span>
+          <div class="sc-icon" style="font-size:18px;margin-bottom:8px">🌿</div>
+          <div class="sc-title" style="font-size:13px">中医药智能服务</div>
+          <div class="sc-desc">体质辨识、中成药辨证推荐、中药配伍安全查询</div>
+          <div class="sc-tags"><span class="sc-tag" style="background:var(--amber-l);color:var(--amber)">体质辨识</span><span class="sc-tag" style="background:var(--amber-l);color:var(--amber)">辨证推荐</span></div>
+          <span class="sc-arrow">→</span>
+        </div>
+        <div class="scene-card sc-green" onclick="showScene('vaccine')" style="padding:16px">
+          <span class="sc-num">12</span>
+          <div class="sc-icon" style="font-size:18px;margin-bottom:8px">💉</div>
+          <div class="sc-title" style="font-size:13px">疫苗接种管理</div>
+          <div class="sc-desc">儿童/成人疫苗计划提醒、预约接种、接种记录管理</div>
+          <div class="sc-tags"><span class="sc-tag" style="background:var(--green-l);color:var(--green)">接种提醒</span><span class="sc-tag" style="background:var(--green-l);color:var(--green)">预约管理</span></div>
+          <span class="sc-arrow">→</span>
+        </div>
+        <div class="scene-card sc-coral" onclick="showScene('authentication')" style="padding:16px">
+          <span class="sc-num">13</span>
+          <div class="sc-icon" style="font-size:18px;margin-bottom:8px">🛡️</div>
+          <div class="sc-title" style="font-size:13px">药品真伪核验</div>
+          <div class="sc-desc">扫码溯源、批号核验、召回信息查询、防伪鉴别</div>
+          <div class="sc-tags"><span class="sc-tag" style="background:var(--coral-l);color:var(--coral)">溯源核验</span><span class="sc-tag" style="background:var(--coral-l);color:var(--coral)">召回查询</span></div>
+          <span class="sc-arrow">→</span>
+        </div>
+        <div class="scene-card sc-teal" onclick="showScene('sensoryhealth')" style="padding:16px">
+          <span class="sc-num">14</span>
+          <div class="sc-icon" style="font-size:18px;margin-bottom:8px">👁️</div>
+          <div class="sc-title" style="font-size:13px">口腔与眼科健康</div>
+          <div class="sc-desc">口腔护理产品选购、视力健康管理、隐形眼镜选配</div>
+          <div class="sc-tags"><span class="sc-tag">口腔护理</span><span class="sc-tag">视力管理</span></div>
+          <span class="sc-arrow">→</span>
+        </div>
+        <div class="scene-card" style="border-color:var(--purple);padding:16px" onclick="showScene('adversereaction')">
+          <span class="sc-num">15</span>
+          <div class="sc-icon" style="font-size:18px;margin-bottom:8px;color:var(--purple)">🚨</div>
+          <div class="sc-title" style="font-size:13px">不良反应监测</div>
+          <div class="sc-desc">用药后异常症状上报、风险评估、引导就医或调整用药</div>
+          <div class="sc-tags"><span class="sc-tag" style="background:var(--purple-l);color:var(--purple)">ADR上报</span><span class="sc-tag" style="background:var(--purple-l);color:var(--purple)">风险评估</span></div>
+          <span class="sc-arrow">→</span>
+        </div>
+        <div class="scene-card sc-amber" onclick="showScene('elderlyrehab')" style="padding:16px">
+          <span class="sc-num">16</span>
+          <div class="sc-icon" style="font-size:18px;margin-bottom:8px">🦽</div>
+          <div class="sc-title" style="font-size:13px">老年康复辅具选购</div>
+          <div class="sc-desc">轮椅、助行器、防跌落设备等适老化产品精准选型与使用指导</div>
+          <div class="sc-tags"><span class="sc-tag" style="background:var(--amber-l);color:var(--amber)">适老选型</span><span class="sc-tag" style="background:var(--amber-l);color:var(--amber)">使用培训</span></div>
+          <span class="sc-arrow">→</span>
+        </div>
+      </div>
+
+  </div><!-- /scene-map -->
+
+  <footer style="border-top:1px solid var(--border);padding:28px 40px;max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+    <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink3)">© 2026 赵永明 · AI产品经理 · 医疗零售智能体全景方案</div>
+    <div style="font-size:11px;color:var(--ink3)">共 16 个应用场景 · 5 核心场景 + 11 延伸场景</div>
+  </footer>
+
+</div><!-- /home -->
+
+
+<!-- ═══════════════════════════════════════════
+     SCENE 1: 药品智能导购
+═══════════════════════════════════════════ -->
+<div class="page" id="scene-pharmacy">
+<div class="detail-page">
+
+  <div class="scene-nav">
+    <span class="scene-nav-label">快速跳转：</span>
+    <button class="scene-nav-btn" onclick="showScene('pharmacy')">💊 药品导购</button>
+    <button class="scene-nav-btn" onclick="showScene('chronic')">📋 慢病管理</button>
+    <button class="scene-nav-btn" onclick="showScene('device')">🩺 器械选购</button>
+    <button class="scene-nav-btn" onclick="showScene('prescription')">📦 处方配送</button>
+    <button class="scene-nav-btn" onclick="showScene('followup')">🏥 院外随访</button>
+    <button class="scene-nav-btn" onclick="showScene('personalized')">🧬 个性化推荐</button>
+    <button class="scene-nav-btn" onclick="showScene('insurance')">📑 保险理赔</button>
+    <button class="scene-nav-btn" onclick="showScene('nutrition')">🥗 营养管理</button>
+    <button class="scene-nav-btn" onclick="showScene('maternalinfant')">🤰 母婴健康</button>
+    <button class="scene-nav-btn" onclick="showScene('labreport')">🔬 检验解读</button>
+    <button class="scene-nav-btn" onclick="showScene('tcm')">🌿 中医药</button>
+    <button class="scene-nav-btn" onclick="showScene('vaccine')">💉 疫苗管理</button>
+    <button class="scene-nav-btn" onclick="showScene('authentication')">🛡️ 药品核验</button>
+    <button class="scene-nav-btn" onclick="showScene('sensoryhealth')">👁️ 口腔眼科</button>
+    <button class="scene-nav-btn" onclick="showScene('adversereaction')">🚨 不良反应</button>
+    <button class="scene-nav-btn" onclick="showScene('elderlyrehab')">🦽 老年辅具</button>
+  </div>
+
+  <div class="detail-hero">
+    <div class="detail-badge" style="background:var(--teal-l);color:var(--teal)">
+      💊 场景01 · Pharmacy Advisor
+    </div>
+    <h1 class="detail-title">药品智能导购</h1>
+    <p class="detail-sub">用户通过自然语言描述症状，智能体结合药品知识库推荐适合的OTC药品，并提供用药指导、安全禁忌提示，严重症状强制引导就医。</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">产品设计方案</div>
+    <div class="product-stages">
+      <div class="stage-card">
+        <div class="stage-num">STAGE 01</div>
+        <div class="stage-title">症状采集与意图解析</div>
+        <ul class="stage-list">
+          <li>多轮对话引导用户描述主要症状、持续时长、伴随症状</li>
+          <li>NER实体抽取：症状词、部位词、程度词</li>
+          <li>意图分类：购药咨询 / 用药问题 / 副作用查询</li>
+          <li>人群标签识别：孕妇、老人、儿童、驾驶员等禁忌人群</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 02</div>
+        <div class="stage-title">智能推荐与知识问答</div>
+        <ul class="stage-list">
+          <li>RAG检索药品知识库，匹配适应症前三候选药品</li>
+          <li>展示药品名称、功效、用法用量、注意事项</li>
+          <li>药品横向对比：价格、口碑、库存、剂型</li>
+          <li>回答"能不能一起吃""多久见效"等追问</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 03</div>
+        <div class="stage-title">安全审核与购买转化</div>
+        <ul class="stage-list">
+          <li>严重症状（胸痛、呼吸困难等）触发就医弹窗，拒绝推药</li>
+          <li>禁忌人群风险提示，必要时拒绝推荐</li>
+          <li>实时库存查询，支持到店自取 / 配送选择</li>
+          <li>一键加购，支持医保、自费结算跳转</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">核心功能拆解</div>
+    <div class="features-grid">
+      <div class="feature-card" style="background:var(--teal-l);border-color:var(--teal)">
+        <div class="feature-icon">🔍</div>
+        <div class="feature-title">症状理解引擎</div>
+        <ul class="feature-items">
+          <li>基于医学NLP的症状实体识别</li>
+          <li>症状—疾病—药品知识图谱链路</li>
+          <li>模糊描述消歧（"头疼"→偏头痛/感冒头痛）</li>
+          <li>支持方言口语化表达理解</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--blue-l);border-color:var(--blue)">
+        <div class="feature-icon">📖</div>
+        <div class="feature-title">药品知识库 RAG</div>
+        <ul class="feature-items">
+          <li>10万+药品说明书向量化索引</li>
+          <li>适应症、禁忌、不良反应结构化提取</li>
+          <li>药品相互作用风险矩阵</li>
+          <li>实时更新：新批号、召回信息同步</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--amber-l);border-color:#b07020">
+        <div class="feature-icon">⚖️</div>
+        <div class="feature-title">安全规则引擎</div>
+        <ul class="feature-items">
+          <li>三级症状分级：可自购/建议咨询/立即就医</li>
+          <li>特殊人群禁忌自动识别与强制提示</li>
+          <li>处方药拦截：不推荐，引导凭处方购药</li>
+          <li>对话历史上下文风险累积评估</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--green-l);border-color:var(--green)">
+        <div class="feature-icon">🛒</div>
+        <div class="feature-title">购买转化链路</div>
+        <ul class="feature-items">
+          <li>实时库存查询（到店/配送/他店调货）</li>
+          <li>价格比对与替代品推荐（平替药）</li>
+          <li>医保资格核验，自动计算个人支付额</li>
+          <li>复购提醒与历史购药记录关联</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">技术架构</div>
+    <div class="arch-flow">
+      <div class="arch-layer-title">用户输入层</div>
+      <div class="arch-nodes">
+        <span class="arch-node">语音 / 文字输入</span>
+        <span class="arch-node">图片（药盒识别）</span>
+        <span class="arch-node">历史对话上下文</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">理解层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">医学NLP意图识别</span>
+        <span class="arch-node highlight">症状NER实体抽取</span>
+        <span class="arch-node">对话状态管理 DST</span>
+        <span class="arch-node">人群标签识别</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">推理检索层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">向量检索 RAG（药品知识库）</span>
+        <span class="arch-node">知识图谱推理（症状→药品）</span>
+        <span class="arch-node">LLM 生成推荐理由</span>
+        <span class="arch-node">排序模型（相关性+库存+价格）</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">安全审核层（必经）</div>
+      <div class="arch-nodes">
+        <span class="arch-node" style="background:#fee;border-color:#c44">严重症状拦截规则</span>
+        <span class="arch-node" style="background:#fee;border-color:#c44">处方药识别过滤</span>
+        <span class="arch-node" style="background:#fee;border-color:#c44">禁忌人群检查</span>
+        <span class="arch-node" style="background:#fee;border-color:#c44">药师人工复核队列</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">输出与转化层</div>
+      <div class="arch-nodes">
+        <span class="arch-node">推荐结果卡片</span>
+        <span class="arch-node">用药说明文本</span>
+        <span class="arch-node highlight">库存查询 API</span>
+        <span class="arch-node highlight">电商下单跳转</span>
+        <span class="arch-node highlight">医保结算接口</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">落地路径</div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-left">
+          <div class="roadmap-dot" style="background:var(--teal)">1</div>
+          <div class="roadmap-line"></div>
+        </div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 1 · 1-2个月</div>
+          <div class="roadmap-title">知识库建设与基础问答</div>
+          <div class="roadmap-desc">采购/清洗药品说明书数据，建立向量索引；上线基础症状问答功能，药师人工审核所有输出；A/B测试推荐准确率，目标准确率>85%。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">数据工程</span><span class="roadmap-tag">RAG搭建</span><span class="roadmap-tag">人工审核</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left">
+          <div class="roadmap-dot" style="background:var(--teal)">2</div>
+          <div class="roadmap-line"></div>
+        </div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 2 · 2-4个月</div>
+          <div class="roadmap-title">安全体系与购买转化</div>
+          <div class="roadmap-desc">接入安全规则引擎，完成处方药/OTC分级；打通库存系统和电商下单链路；上线医保查询接口；完成药品监管备案。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">安全规则</span><span class="roadmap-tag">库存API</span><span class="roadmap-tag">医保接口</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left">
+          <div class="roadmap-dot" style="background:var(--teal)">3</div>
+          <div class="roadmap-line"></div>
+        </div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 3 · 4-6个月</div>
+          <div class="roadmap-title">个性化与持续优化</div>
+          <div class="roadmap-desc">接入用户历史购药记录做个性化推荐；基于用户反馈持续Fine-tuning医学NLP模型；上线图片药盒识别功能；评估NPS和转化率达标情况。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">个性化推荐</span><span class="roadmap-tag">Fine-tuning</span><span class="roadmap-tag">图像识别</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">核心指标目标</div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-val" style="color:var(--teal)">≥85%</div>
+        <div class="metric-label">推荐准确率<br>（药师评审）</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val" style="color:var(--teal)">＜3s</div>
+        <div class="metric-label">首屏推荐响应<br>时间</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val" style="color:var(--teal)">100%</div>
+        <div class="metric-label">严重症状拦截<br>覆盖率</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val" style="color:var(--teal)">≥25%</div>
+        <div class="metric-label">问询→购买<br>转化率</div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="section">
+    <div class="section-label">风险与挑战</div>
+    <div class="risk-grid">
+      <div class="risk-card" style="border-color:var(--red)">
+        <div class="risk-card-title">⚠️ 监管合规风险</div>
+        <div class="risk-card-desc">互联网药品销售受《药品网络销售监督管理办法》严格约束，OTC推荐边界模糊可能触发执法风险。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>提前取得互联网药品信息服务资质，所有推荐内容经药师审核，处方药零推荐。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--amber)">
+        <div class="risk-card-title">⚠️ 推荐准确性风险</div>
+        <div class="risk-card-desc">症状描述模糊或用户隐瞒病史，可能导致推荐药品不适合实际情况，引发不良反应。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>多轮追问消歧，保留人工药师兜底，建立不良反应上报通道。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--blue)">
+        <div class="risk-card-title">⚠️ 知识库时效性风险</div>
+        <div class="risk-card-desc">药品说明书更新、新增禁忌或召回信息若未及时同步，可能产生安全隐患。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>建立NMPA数据定期同步机制（至少每周），重要变更24小时内更新。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--green)">
+        <div class="risk-card-title">⚠️ 用户依赖风险</div>
+        <div class="risk-card-desc">用户将智能体推荐替代医生诊断，忽视症状背后的严重疾病。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>每次推荐末尾强制显示"本建议不替代医疗诊断"，持续症状引导就医。</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     SCENE 2: 慢病用药管理
+═══════════════════════════════════════════ -->
+<div class="page" id="scene-chronic">
+<div class="detail-page">
+
+  <div class="scene-nav">
+    <span class="scene-nav-label">快速跳转：</span>
+    <button class="scene-nav-btn" onclick="showScene('pharmacy')">💊 药品导购</button>
+    <button class="scene-nav-btn" onclick="showScene('chronic')">📋 慢病管理</button>
+    <button class="scene-nav-btn" onclick="showScene('device')">🩺 器械选购</button>
+    <button class="scene-nav-btn" onclick="showScene('prescription')">📦 处方配送</button>
+    <button class="scene-nav-btn" onclick="showScene('followup')">🏥 院外随访</button>
+    <button class="scene-nav-btn" onclick="showScene('personalized')">🧬 个性化推荐</button>
+    <button class="scene-nav-btn" onclick="showScene('insurance')">📑 保险理赔</button>
+    <button class="scene-nav-btn" onclick="showScene('nutrition')">🥗 营养管理</button>
+    <button class="scene-nav-btn" onclick="showScene('maternalinfant')">🤰 母婴健康</button>
+    <button class="scene-nav-btn" onclick="showScene('labreport')">🔬 检验解读</button>
+    <button class="scene-nav-btn" onclick="showScene('tcm')">🌿 中医药</button>
+    <button class="scene-nav-btn" onclick="showScene('vaccine')">💉 疫苗管理</button>
+    <button class="scene-nav-btn" onclick="showScene('authentication')">🛡️ 药品核验</button>
+    <button class="scene-nav-btn" onclick="showScene('sensoryhealth')">👁️ 口腔眼科</button>
+    <button class="scene-nav-btn" onclick="showScene('adversereaction')">🚨 不良反应</button>
+    <button class="scene-nav-btn" onclick="showScene('elderlyrehab')">🦽 老年辅具</button>
+  </div>
+
+  <div class="detail-hero">
+    <div class="detail-badge" style="background:var(--blue-l);color:var(--blue)">
+      📋 场景02 · Chronic Disease Management
+    </div>
+    <h1 class="detail-title">慢病用药管理智能体</h1>
+    <p class="detail-sub">为糖尿病、高血压、冠心病等慢性病患者提供长期用药管理服务，涵盖服药提醒、用药依从性追踪、自动续药和健康教育，减少漏服、错服风险。</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">产品设计方案</div>
+    <div class="product-stages">
+      <div class="stage-card">
+        <div class="stage-num">STAGE 01</div>
+        <div class="stage-title">用药档案建立</div>
+        <ul class="stage-list">
+          <li>对话采集：病种、用药清单、剂量、服药时间表</li>
+          <li>支持上传处方/药盒照片自动识别建档</li>
+          <li>可与医院HIS系统同步，自动导入在院处方</li>
+          <li>建立用药画像：年龄、肾功能状态、过敏史</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 02</div>
+        <div class="stage-title">智能提醒与依从管理</div>
+        <ul class="stage-list">
+          <li>多渠道推送：App/微信/短信，按用户习惯发送</li>
+          <li>漏服检测：超时未确认自动提醒补救方案</li>
+          <li>依从率趋势图，家属可见（需授权）</li>
+          <li>节假日/出行模式自动调整提醒时间</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 03</div>
+        <div class="stage-title">续药与随访闭环</div>
+        <ul class="stage-list">
+          <li>剩余量预估：提前7天发送续药提醒</li>
+          <li>一键续药：历史处方复诊预约或药品直接配送</li>
+          <li>定期健康问卷：血压/血糖记录，指标异常预警</li>
+          <li>门诊随访提醒，生成就诊摘要供医生参考</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">核心功能拆解</div>
+    <div class="features-grid">
+      <div class="feature-card" style="background:var(--blue-l);border-color:var(--blue)">
+        <div class="feature-icon">🗂️</div>
+        <div class="feature-title">用药档案管理</div>
+        <ul class="feature-items">
+          <li>结构化药品信息录入（名称/剂量/频次/疗程）</li>
+          <li>多药物相互作用实时检查</li>
+          <li>处方有效期追踪与续方提示</li>
+          <li>家庭成员用药档案统一管理</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--teal-l);border-color:var(--teal)">
+        <div class="feature-icon">⏰</div>
+        <div class="feature-title">智能提醒引擎</div>
+        <ul class="feature-items">
+          <li>基于用户行为学习最优推送时机</li>
+          <li>饭前/饭后/睡前精准提醒规则</li>
+          <li>漏服补救策略（安全剂量内建议补服）</li>
+          <li>依从率周报，低依从自动触发关怀话术</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--green-l);border-color:var(--green)">
+        <div class="feature-icon">📈</div>
+        <div class="feature-title">健康监测集成</div>
+        <ul class="feature-items">
+          <li>血压/血糖数据接入（手动录入或设备同步）</li>
+          <li>指标趋势分析与控制达标评估</li>
+          <li>异常值自动预警，推送患者+家属+医生</li>
+          <li>用药效果与指标相关性分析报告</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--amber-l);border-color:#b07020">
+        <div class="feature-icon">🔄</div>
+        <div class="feature-title">续药自动化</div>
+        <ul class="feature-items">
+          <li>药品剩余量智能预估（已服天数×日剂量）</li>
+          <li>线上复诊预约（互联网医院续方）</li>
+          <li>处方自动流转药房，免跑腿配送</li>
+          <li>医保额度提前告知，避免断药风险</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">技术架构</div>
+    <div class="arch-flow">
+      <div class="arch-layer-title">数据采集层</div>
+      <div class="arch-nodes">
+        <span class="arch-node">患者主动录入</span>
+        <span class="arch-node">处方OCR识别</span>
+        <span class="arch-node">HIS系统同步</span>
+        <span class="arch-node">智能硬件（血糖仪/血压计）</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">档案管理层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">用药档案数据库</span>
+        <span class="arch-node">药物相互作用检查引擎</span>
+        <span class="arch-node highlight">用药画像建模</span>
+        <span class="arch-node">处方有效期管理</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">智能决策层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">提醒时机优化模型</span>
+        <span class="arch-node">依从性预测算法</span>
+        <span class="arch-node">异常指标检测规则</span>
+        <span class="arch-node">续药时机预估</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">触达与执行层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">消息推送服务（App/微信/SMS）</span>
+        <span class="arch-node highlight">互联网医院续方接口</span>
+        <span class="arch-node">药房配送系统</span>
+        <span class="arch-node">医生工作站推送</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">落地路径</div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--blue)">1</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 1 · 1-2个月</div>
+          <div class="roadmap-title">用药档案+基础提醒上线</div>
+          <div class="roadmap-desc">完成用药档案录入功能（含OCR），上线多渠道服药提醒，支持手动录入血压/血糖数据，依从率统计报表。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">用药档案</span><span class="roadmap-tag">提醒引擎</span><span class="roadmap-tag">OCR识别</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--blue)">2</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 2 · 2-4个月</div>
+          <div class="roadmap-title">智能监测+续药自动化</div>
+          <div class="roadmap-desc">接入主流血糖仪/血压计数据，上线异常预警推送；打通互联网医院续方和药房配送；医生端工作台集成。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">设备接入</span><span class="roadmap-tag">异常预警</span><span class="roadmap-tag">续药自动化</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--blue)">3</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 3 · 4-8个月</div>
+          <div class="roadmap-title">智能依从预测+HIS深度对接</div>
+          <div class="roadmap-desc">训练依从性预测模型，提前干预高风险患者；与医院HIS完成深度数据互通；上线用药效果评估报告；构建家庭医生协作模式。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">AI预测</span><span class="roadmap-tag">HIS集成</span><span class="roadmap-tag">效果评估</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">核心指标目标</div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-val" style="color:var(--blue)">≥90%</div>
+        <div class="metric-label">用药依从率<br>（3个月后）</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val" style="color:var(--blue)">≤5%</div>
+        <div class="metric-label">断药发生率<br>（续药覆盖）</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val" style="color:var(--blue)">＜2h</div>
+        <div class="metric-label">异常指标预警<br>响应时间</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val" style="color:var(--blue)">≥4.5⭐</div>
+        <div class="metric-label">患者满意度<br>评分</div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="section">
+    <div class="section-label">风险与挑战</div>
+    <div class="risk-grid">
+      <div class="risk-card" style="border-color:var(--red)">
+        <div class="risk-card-title">⚠️ 数据隐私合规风险</div>
+        <div class="risk-card-desc">慢病患者用药档案属于高度敏感的健康数据，存储、传输须满足等保三级和个人信息保护法要求。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>数据最小化原则，用户明示授权，本地加密存储，不得用于商业分析。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--amber)">
+        <div class="risk-card-title">⚠️ 漏服补救误导风险</div>
+        <div class="risk-card-desc">不同药物漏服后的补救策略差异很大，错误的补服建议可能导致剂量堆积或疗效中断。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>补救建议按药物逐一配置，来源于临床指南，高风险药物（华法林等）一律建议咨询医生。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--blue)">
+        <div class="risk-card-title">⚠️ HIS接口稳定性风险</div>
+        <div class="risk-card-desc">医院系统接口标准不统一，升级维护频繁，可能导致用药档案同步中断。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>本地档案作为主数据，HIS同步作为增量补充，断连时降级为手动维护模式。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--green)">
+        <div class="risk-card-title">⚠️ 老年用户使用门槛</div>
+        <div class="risk-card-desc">慢病患者多为老年人，对智能手机操作熟练度低，可能导致实际依从率低于预期。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>提供家属代管模式、电话IVR提醒、大字体简洁界面三种并行方案。</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     SCENE 3: 器械选购助手
+═══════════════════════════════════════════ -->
+<div class="page" id="scene-device">
+<div class="detail-page">
+
+  <div class="scene-nav">
+    <span class="scene-nav-label">快速跳转：</span>
+    <button class="scene-nav-btn" onclick="showScene('pharmacy')">💊 药品导购</button>
+    <button class="scene-nav-btn" onclick="showScene('chronic')">📋 慢病管理</button>
+    <button class="scene-nav-btn" onclick="showScene('device')">🩺 器械选购</button>
+    <button class="scene-nav-btn" onclick="showScene('prescription')">📦 处方配送</button>
+    <button class="scene-nav-btn" onclick="showScene('followup')">🏥 院外随访</button>
+    <button class="scene-nav-btn" onclick="showScene('personalized')">🧬 个性化推荐</button>
+    <button class="scene-nav-btn" onclick="showScene('insurance')">📑 保险理赔</button>
+    <button class="scene-nav-btn" onclick="showScene('nutrition')">🥗 营养管理</button>
+    <button class="scene-nav-btn" onclick="showScene('maternalinfant')">🤰 母婴健康</button>
+    <button class="scene-nav-btn" onclick="showScene('labreport')">🔬 检验解读</button>
+    <button class="scene-nav-btn" onclick="showScene('tcm')">🌿 中医药</button>
+    <button class="scene-nav-btn" onclick="showScene('vaccine')">💉 疫苗管理</button>
+    <button class="scene-nav-btn" onclick="showScene('authentication')">🛡️ 药品核验</button>
+    <button class="scene-nav-btn" onclick="showScene('sensoryhealth')">👁️ 口腔眼科</button>
+    <button class="scene-nav-btn" onclick="showScene('adversereaction')">🚨 不良反应</button>
+    <button class="scene-nav-btn" onclick="showScene('elderlyrehab')">🦽 老年辅具</button>
+  </div>
+
+  <div class="detail-hero">
+    <div class="detail-badge" style="background:var(--amber-l);color:var(--amber)">
+      🩺 场景03 · Medical Device Advisor
+    </div>
+    <h1 class="detail-title">家用医疗器械选购助手</h1>
+    <p class="detail-sub">针对血糖仪、血压计、制氧机、CPAP等家用医疗器械，提供基于用户病情、年龄、使用场景的精准选型建议，并引导完成购买、使用培训和售后。</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">产品设计方案</div>
+    <div class="product-stages">
+      <div class="stage-card">
+        <div class="stage-num">STAGE 01</div>
+        <div class="stage-title">需求诊断</div>
+        <ul class="stage-list">
+          <li>对话采集：使用目的、主要用户（患者/家属）、使用频率</li>
+          <li>了解用户技术接受度：适合简易型/专业型</li>
+          <li>明确预算范围与品牌偏好</li>
+          <li>识别特殊需求：蓝牙同步、大屏显示、语音播报</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 02</div>
+        <div class="stage-title">选型推荐</div>
+        <ul class="stage-list">
+          <li>3~5款候选产品参数横向对比表</li>
+          <li>结合临床指南推荐精度达标的医疗级设备</li>
+          <li>突出关键差异点，避免信息过载</li>
+          <li>真实用户评价摘要（UGC内容结构化提取）</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 03</div>
+        <div class="stage-title">购后服务</div>
+        <ul class="stage-list">
+          <li>AI视频教程推荐+图文使用指南</li>
+          <li>首次使用引导：智能体对话式教学</li>
+          <li>售后FAQ智能问答（如何校准/电池更换）</li>
+          <li>保修期提醒与维修预约服务</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">核心功能拆解</div>
+    <div class="features-grid">
+      <div class="feature-card" style="background:var(--amber-l);border-color:#b07020">
+        <div class="feature-icon">🧩</div>
+        <div class="feature-title">需求理解与画像</div>
+        <ul class="feature-items">
+          <li>病情标签提取（糖尿病/高血压/COPD等）</li>
+          <li>使用者年龄适配（老人大字体/儿童友好）</li>
+          <li>场景识别（家庭/出行/医院级精度）</li>
+          <li>预算弹性感知与价位分段匹配</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--teal-l);border-color:var(--teal)">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">产品知识库</div>
+        <ul class="feature-items">
+          <li>5000+家用医疗器械结构化参数库</li>
+          <li>NMPA注册证信息实时核验</li>
+          <li>临床精度对比数据（与金标准对比）</li>
+          <li>兼容耗材/配件信息关联</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--blue-l);border-color:var(--blue)">
+        <div class="feature-icon">🤝</div>
+        <div class="feature-title">选购决策引擎</div>
+        <ul class="feature-items">
+          <li>多维度评分加权模型（精度/价格/口碑/售后）</li>
+          <li>用户偏好学习，同类产品优先级调整</li>
+          <li>避免过度推荐：匹配需求即止，不强推高价</li>
+          <li>实时价格比对（自营+第三方渠道）</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--green-l);border-color:var(--green)">
+        <div class="feature-icon">📚</div>
+        <div class="feature-title">售后智能服务</div>
+        <ul class="feature-items">
+          <li>对话式操作引导（首次使用0~0步骤）</li>
+          <li>常见问题库（500+FAQ向量化检索）</li>
+          <li>设备故障自检树，远程辅助判断</li>
+          <li>维修进度追踪与换货申请流程</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">技术架构</div>
+    <div class="arch-flow">
+      <div class="arch-layer-title">用户需求采集</div>
+      <div class="arch-nodes">
+        <span class="arch-node">对话需求问卷</span>
+        <span class="arch-node">历史购买记录</span>
+        <span class="arch-node">病历/诊断报告（可选授权）</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">需求理解层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">用户需求解析模型</span>
+        <span class="arch-node">场景/人群分类</span>
+        <span class="arch-node">预算敏感度分析</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">产品匹配层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">器械知识库向量检索</span>
+        <span class="arch-node highlight">多维评分排序引擎</span>
+        <span class="arch-node">实时价格/库存查询</span>
+        <span class="arch-node">NMPA合规性验证</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">转化与服务层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">商品详情&对比展示</span>
+        <span class="arch-node highlight">下单转化（电商API）</span>
+        <span class="arch-node">使用指南推送</span>
+        <span class="arch-node">售后服务工单</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">落地路径</div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:#b07020">1</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 1 · 1-2个月</div>
+          <div class="roadmap-title">知识库建设+基础选型</div>
+          <div class="roadmap-desc">建立核心品类（血糖仪、血压计、体温计）产品知识库，上线对话式选型推荐，验证推荐准确率与用户满意度。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">知识库建设</span><span class="roadmap-tag">选型模型</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:#b07020">2</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 2 · 2-4个月</div>
+          <div class="roadmap-title">扩品类+购后服务</div>
+          <div class="roadmap-desc">扩展制氧机、CPAP等高客单品类；上线对话式使用引导和售后FAQ；接入维修工单系统。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">品类扩展</span><span class="roadmap-tag">售后服务</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:#b07020">3</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 3 · 4-6个月</div>
+          <div class="roadmap-title">数据闭环+个性化</div>
+          <div class="roadmap-desc">接入用户健康档案做深度个性化推荐；建立设备使用反馈闭环，优化推荐模型；上线企业/医院批采智能询价功能。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">个性化</span><span class="roadmap-tag">企业采购</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">核心指标目标</div>
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-val" style="color:#b07020">≥80%</div><div class="metric-label">选型满意度<br>（问卷评分）</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:#b07020">≥30%</div><div class="metric-label">咨询→购买<br>转化率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:#b07020">≤2%</div><div class="metric-label">退货率<br>（选型不适）</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:#b07020">＜60s</div><div class="metric-label">售后FAQ平均<br>解决时间</div></div>
+    </div>
+  </div>
+
+
+
+  <div class="section">
+    <div class="section-label">风险与挑战</div>
+    <div class="risk-grid">
+      <div class="risk-card" style="border-color:var(--red)">
+        <div class="risk-card-title">⚠️ 医疗器械广告合规风险</div>
+        <div class="risk-card-desc">家用医疗器械推荐涉及广告法与医疗器械监督管理条例，夸大功效或误导性描述面临监管处罚。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>推荐文案严格遵循NMPA注册适用范围，禁用"治疗""治愈"等字眼，法务审核全部模板。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--amber)">
+        <div class="risk-card-title">⚠️ 选型不当导致退货</div>
+        <div class="risk-card-desc">用户需求描述不准确或智能体理解偏差，推荐产品不适用导致高退货率，影响口碑。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>提供7天无理由退换，推荐前增加"确认需求"确认步骤，记录推荐依据供客诉分析。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--blue)">
+        <div class="risk-card-title">⚠️ 知识库维护成本高</div>
+        <div class="risk-card-desc">器械品类繁多，参数更新频繁，人工维护5000+产品库成本极高且容易出错。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>引入厂商直连数据源自动同步，辅以AI辅助参数提取，人工仅审核新品入库。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--green)">
+        <div class="risk-card-title">⚠️ 高客单品决策周期长</div>
+        <div class="risk-card-desc">制氧机、CPAP等高价产品用户决策周期可达2-4周，单次对话难以完成转化。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>支持收藏比价清单、异步回访推送、免费试用7天等降低决策门槛的运营策略。</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     SCENE 4: 处方药配送
+═══════════════════════════════════════════ -->
+<div class="page" id="scene-prescription">
+<div class="detail-page">
+
+  <div class="scene-nav">
+    <span class="scene-nav-label">快速跳转：</span>
+    <button class="scene-nav-btn" onclick="showScene('pharmacy')">💊 药品导购</button>
+    <button class="scene-nav-btn" onclick="showScene('chronic')">📋 慢病管理</button>
+    <button class="scene-nav-btn" onclick="showScene('device')">🩺 器械选购</button>
+    <button class="scene-nav-btn" onclick="showScene('prescription')">📦 处方配送</button>
+    <button class="scene-nav-btn" onclick="showScene('followup')">🏥 院外随访</button>
+    <button class="scene-nav-btn" onclick="showScene('personalized')">🧬 个性化推荐</button>
+    <button class="scene-nav-btn" onclick="showScene('insurance')">📑 保险理赔</button>
+    <button class="scene-nav-btn" onclick="showScene('nutrition')">🥗 营养管理</button>
+    <button class="scene-nav-btn" onclick="showScene('maternalinfant')">🤰 母婴健康</button>
+    <button class="scene-nav-btn" onclick="showScene('labreport')">🔬 检验解读</button>
+    <button class="scene-nav-btn" onclick="showScene('tcm')">🌿 中医药</button>
+    <button class="scene-nav-btn" onclick="showScene('vaccine')">💉 疫苗管理</button>
+    <button class="scene-nav-btn" onclick="showScene('authentication')">🛡️ 药品核验</button>
+    <button class="scene-nav-btn" onclick="showScene('sensoryhealth')">👁️ 口腔眼科</button>
+    <button class="scene-nav-btn" onclick="showScene('adversereaction')">🚨 不良反应</button>
+    <button class="scene-nav-btn" onclick="showScene('elderlyrehab')">🦽 老年辅具</button>
+  </div>
+
+  <div class="detail-hero">
+    <div class="detail-badge" style="background:var(--coral-l);color:var(--coral)">
+      📦 场景04 · Prescription Delivery
+    </div>
+    <h1 class="detail-title">处方药配送全流程智能体</h1>
+    <p class="detail-sub">打通医院HIS系统，实现电子处方在线流转、AI辅助药师审方、智能调配调度，以及冷链全程追踪，构建从处方开具到患者收药的数字化闭环。</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">产品设计方案</div>
+    <div class="product-stages">
+      <div class="stage-card">
+        <div class="stage-num">STAGE 01</div>
+        <div class="stage-title">处方获取与验真</div>
+        <ul class="stage-list">
+          <li>医院HIS电子处方实时推送（HL7/FHIR标准）</li>
+          <li>互联网医院在线问诊处方对接</li>
+          <li>纸质处方OCR+防伪码核验</li>
+          <li>处方有效期、医生执照资质自动校验</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 02</div>
+        <div class="stage-title">AI辅助审方</div>
+        <ul class="stage-list">
+          <li>剂量合理性核查（体重/年龄适配）</li>
+          <li>药物相互作用风险评估</li>
+          <li>重复用药识别（与患者历史处方对比）</li>
+          <li>风险处方自动转人工药师复核队列</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 03</div>
+        <div class="stage-title">调配与配送追踪</div>
+        <ul class="stage-list">
+          <li>自动化分拣机器人调配指令生成</li>
+          <li>冷链运输实时温度监控告警</li>
+          <li>配送进度多渠道推送（微信/短信）</li>
+          <li>签收确认与用药指导一并发送</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">核心功能拆解</div>
+    <div class="features-grid">
+      <div class="feature-card" style="background:var(--coral-l);border-color:#b04030">
+        <div class="feature-icon">📄</div>
+        <div class="feature-title">处方管理系统</div>
+        <ul class="feature-items">
+          <li>多来源处方统一接收与标准化</li>
+          <li>处方状态机管理（待审/通过/拒绝/已发药）</li>
+          <li>处方存档与监管合规查阅</li>
+          <li>患者历史处方完整链条管理</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--blue-l);border-color:var(--blue)">
+        <div class="feature-icon">🤖</div>
+        <div class="feature-title">AI审方引擎</div>
+        <ul class="feature-items">
+          <li>基于临床指南的用药合理性规则库</li>
+          <li>LLM辅助生成审方建议说明</li>
+          <li>风险等级分级（低/中/高风险自动/人工）</li>
+          <li>审方效率分析与规则持续优化</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--amber-l);border-color:#b07020">
+        <div class="feature-icon">🏭</div>
+        <div class="feature-title">调配自动化</div>
+        <ul class="feature-items">
+          <li>与自动化分拣机系统API对接</li>
+          <li>拆零调配智能指导（特殊剂型）</li>
+          <li>调配核对双重扫码确认</li>
+          <li>批次管理与近效期预警</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--green-l);border-color:var(--green)">
+        <div class="feature-icon">🌡️</div>
+        <div class="feature-title">冷链物流追踪</div>
+        <ul class="feature-items">
+          <li>IoT温度传感器全程实时监控</li>
+          <li>冷链断链自动预警+应急方案触发</li>
+          <li>配送轨迹实时查询（面向患者）</li>
+          <li>签收时间窗预约，避免高温停留</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">技术架构</div>
+    <div class="arch-flow">
+      <div class="arch-layer-title">处方来源层（多渠道）</div>
+      <div class="arch-nodes">
+        <span class="arch-node">医院HIS（HL7/FHIR）</span>
+        <span class="arch-node">互联网医院API</span>
+        <span class="arch-node">纸质处方OCR</span>
+        <span class="arch-node">医保平台电子处方</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">处方中台层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">处方标准化引擎（HL7/FHIR转换）</span>
+        <span class="arch-node">资质验证服务（医生执照/医院资质）</span>
+        <span class="arch-node">处方状态机管理</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">AI审方层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">合理用药规则库（10000+规则）</span>
+        <span class="arch-node highlight">LLM辅助审方建议生成</span>
+        <span class="arch-node">药师工作台（人工复核）</span>
+        <span class="arch-node">审方效果跟踪</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">调配与物流层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">自动化分拣机器人接口</span>
+        <span class="arch-node highlight">冷链IoT监控平台</span>
+        <span class="arch-node">WMS仓储管理系统</span>
+        <span class="arch-node">TMS运输管理系统</span>
+        <span class="arch-node">患者通知服务</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">落地路径</div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--coral)">1</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 1 · 2-3个月</div>
+          <div class="roadmap-title">HIS对接+基础审方</div>
+          <div class="roadmap-desc">完成1-2家医院HIS系统对接，建立合理用药规则库，上线AI辅助审方（全量人工复核），验证准确率>95%。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">HIS对接</span><span class="roadmap-tag">规则库</span><span class="roadmap-tag">人工审核</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--coral)">2</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 2 · 3-6个月</div>
+          <div class="roadmap-title">调配自动化+冷链追踪</div>
+          <div class="roadmap-desc">接入自动化分拣系统；部署IoT冷链监控；低风险处方开放AI自动审方（高风险保留人工复核）；完成药品监管平台备案。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">自动调配</span><span class="roadmap-tag">冷链IoT</span><span class="roadmap-tag">监管备案</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--coral)">3</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 3 · 6-12个月</div>
+          <div class="roadmap-title">规模化扩张+医保直结</div>
+          <div class="roadmap-desc">扩展至10+家医院；接入医保直接结算；优化AI审方模型，目标低风险处方99%自动通过；上线患者全程可视化追踪应用。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">规模化</span><span class="roadmap-tag">医保直结</span><span class="roadmap-tag">可视化</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">核心指标目标</div>
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-val" style="color:var(--coral)">≥99%</div><div class="metric-label">审方准确率<br>（AI+人工）</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--coral)">＜4h</div><div class="metric-label">处方→发药<br>周转时间</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--coral)">100%</div><div class="metric-label">冷链药品温度<br>监控覆盖</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--coral)">≤0.1%</div><div class="metric-label">调配差错率<br>（含核对）</div></div>
+    </div>
+  </div>
+
+
+
+  <div class="section">
+    <div class="section-label">风险与挑战</div>
+    <div class="risk-grid">
+      <div class="risk-card" style="border-color:var(--red)">
+        <div class="risk-card-title">⚠️ 处方真实性验证风险</div>
+        <div class="risk-card-desc">伪造处方、重复使用处方等欺诈行为可能导致处方药滥用，同时使平台承担法律责任。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>接入医院HIS实时验真，纸质处方防伪码+人脸核验双重校验，建立处方使用黑名单。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--amber)">
+        <div class="risk-card-title">⚠️ AI审方过度依赖风险</div>
+        <div class="risk-card-desc">AI审方模型存在误判，若完全取代药师将产生严重的用药安全事故。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>AI仅做辅助建议，最终审方决策权保留在持证药师，建立AI误判追溯机制。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--blue)">
+        <div class="risk-card-title">⚠️ 冷链断链法律风险</div>
+        <div class="risk-card-desc">生物制品、胰岛素等冷链药品一旦温控失败，药效受损且平台须承担赔偿与召回责任。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>全程温度数据区块链存证，断链药品自动拦截不发出，购买保险转移尾部风险。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--green)">
+        <div class="risk-card-title">⚠️ 医院HIS对接周期长</div>
+        <div class="risk-card-desc">医院信息化系统复杂，接口对接谈判、测试、上线周期通常长达6-12个月，影响商业推进速度。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>优先选择已有互联互通标准（HL7/FHIR）的医院试点，并行推进互联网医院轻量接入。</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     SCENE 5: 院外患者随访
+═══════════════════════════════════════════ -->
+<div class="page" id="scene-followup">
+<div class="detail-page">
+
+  <div class="scene-nav">
+    <span class="scene-nav-label">快速跳转：</span>
+    <button class="scene-nav-btn" onclick="showScene('pharmacy')">💊 药品导购</button>
+    <button class="scene-nav-btn" onclick="showScene('chronic')">📋 慢病管理</button>
+    <button class="scene-nav-btn" onclick="showScene('device')">🩺 器械选购</button>
+    <button class="scene-nav-btn" onclick="showScene('prescription')">📦 处方配送</button>
+    <button class="scene-nav-btn" onclick="showScene('followup')">🏥 院外随访</button>
+    <button class="scene-nav-btn" onclick="showScene('personalized')">🧬 个性化推荐</button>
+    <button class="scene-nav-btn" onclick="showScene('insurance')">📑 保险理赔</button>
+    <button class="scene-nav-btn" onclick="showScene('nutrition')">🥗 营养管理</button>
+    <button class="scene-nav-btn" onclick="showScene('maternalinfant')">🤰 母婴健康</button>
+    <button class="scene-nav-btn" onclick="showScene('labreport')">🔬 检验解读</button>
+    <button class="scene-nav-btn" onclick="showScene('tcm')">🌿 中医药</button>
+    <button class="scene-nav-btn" onclick="showScene('vaccine')">💉 疫苗管理</button>
+    <button class="scene-nav-btn" onclick="showScene('authentication')">🛡️ 药品核验</button>
+    <button class="scene-nav-btn" onclick="showScene('sensoryhealth')">👁️ 口腔眼科</button>
+    <button class="scene-nav-btn" onclick="showScene('adversereaction')">🚨 不良反应</button>
+    <button class="scene-nav-btn" onclick="showScene('elderlyrehab')">🦽 老年辅具</button>
+  </div>
+
+  <div class="detail-hero">
+    <div class="detail-badge" style="background:var(--green-l);color:var(--green)">
+      🏥 场景05 · Patient Follow-up
+    </div>
+    <h1 class="detail-title">院外患者随访智能体</h1>
+    <p class="detail-sub">面向术后、出院患者，提供定期对话式随访、康复指导、健康指标监测和异常上报服务，形成院内院外一体化的患者管理闭环，减少再入院率。</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">产品设计方案</div>
+    <div class="product-stages">
+      <div class="stage-card">
+        <div class="stage-num">STAGE 01</div>
+        <div class="stage-title">随访计划制定</div>
+        <ul class="stage-list">
+          <li>基于DRG病种自动生成随访频次和问卷</li>
+          <li>支持医生自定义随访模板和关注指标</li>
+          <li>患者出院时自动激活随访任务</li>
+          <li>随访时间智能调度，避免节假日漏访</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 02</div>
+        <div class="stage-title">对话式随访执行</div>
+        <ul class="stage-list">
+          <li>主动发起随访对话，自然语言采集健康状态</li>
+          <li>标准化评估量表（SF-36/PHQ-9等）对话化呈现</li>
+          <li>伤口/引流情况图片上传与AI初步判断</li>
+          <li>患者诉求实时记录，推送至责任护士</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 03</div>
+        <div class="stage-title">异常处置与闭环</div>
+        <ul class="stage-list">
+          <li>异常指标（发热>38.5℃/出血等）立即告警</li>
+          <li>分级处置：电话回访/急诊导流/上门护理</li>
+          <li>随访数据自动回写HIS，生成随访记录</li>
+          <li>医生端可查看全部患者随访热力图</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">核心功能拆解</div>
+    <div class="features-grid">
+      <div class="feature-card" style="background:var(--green-l);border-color:var(--green)">
+        <div class="feature-icon">📅</div>
+        <div class="feature-title">随访任务调度</div>
+        <ul class="feature-items">
+          <li>病种随访计划模板库（50+病种）</li>
+          <li>随访频次动态调整（依据恢复情况）</li>
+          <li>多渠道触达：微信/App/电话/短信</li>
+          <li>未完成随访自动升级提醒责任人</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--blue-l);border-color:var(--blue)">
+        <div class="feature-icon">💬</div>
+        <div class="feature-title">智能对话随访</div>
+        <ul class="feature-items">
+          <li>LLM驱动自然对话，非表单填写</li>
+          <li>量表自动评分与结果解读</li>
+          <li>患者情绪识别，心理健康关怀</li>
+          <li>多语言/方言支持（普通话/粤语等）</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--coral-l);border-color:#b04030">
+        <div class="feature-icon">🚨</div>
+        <div class="feature-title">异常预警系统</div>
+        <ul class="feature-items">
+          <li>规则+ML双引擎异常检测</li>
+          <li>症状组合风险评分（非单一指标判断）</li>
+          <li>预警分级：绿/黄/橙/红四级响应</li>
+          <li>预警处置闭环跟踪（是否及时响应）</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--amber-l);border-color:#b07020">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">医生端数据看板</div>
+        <ul class="feature-items">
+          <li>患者随访完成率实时监控</li>
+          <li>异常患者列表优先级排序</li>
+          <li>康复趋势对比（同病种基线）</li>
+          <li>随访质量评估与科室报告</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">技术架构</div>
+    <div class="arch-flow">
+      <div class="arch-layer-title">触发与调度层</div>
+      <div class="arch-nodes">
+        <span class="arch-node">HIS出院事件触发</span>
+        <span class="arch-node">随访计划引擎</span>
+        <span class="arch-node highlight">消息调度服务（多渠道）</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">对话执行层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">LLM对话管理（多轮随访）</span>
+        <span class="arch-node">量表自动化评分引擎</span>
+        <span class="arch-node">图片分析（伤口识别）</span>
+        <span class="arch-node">情绪NLP识别</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">数据处理层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">症状结构化提取</span>
+        <span class="arch-node highlight">异常风险评分模型</span>
+        <span class="arch-node">患者画像更新</span>
+        <span class="arch-node">随访记录归档</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">响应与闭环层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">预警推送（医生/护士工作站）</span>
+        <span class="arch-node">HIS随访记录回写</span>
+        <span class="arch-node">再入院协助（床位预约）</span>
+        <span class="arch-node">数据看板可视化</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">落地路径</div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--green)">1</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 1 · 1-3个月</div>
+          <div class="roadmap-title">基础随访+量表对话化</div>
+          <div class="roadmap-desc">选择2-3个重点病种（心外科/骨科）试点，搭建随访问卷模板，上线对话式量表采集，验证完成率目标≥70%。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">试点病种</span><span class="roadmap-tag">问卷模板</span><span class="roadmap-tag">对话化</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--green)">2</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 2 · 3-6个月</div>
+          <div class="roadmap-title">异常预警+HIS回写</div>
+          <div class="roadmap-desc">上线风险评分模型和分级预警；完成随访数据自动回写HIS；医生端看板上线；扩展到10+病种。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">预警系统</span><span class="roadmap-tag">HIS集成</span><span class="roadmap-tag">医生看板</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--green)">3</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 3 · 6-12个月</div>
+          <div class="roadmap-title">全病种覆盖+再入院预测</div>
+          <div class="roadmap-desc">全院病种覆盖；上线再入院风险预测模型；建立院外护理上门服务对接；输出随访质量报告，支持医院等级评审。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">全院覆盖</span><span class="roadmap-tag">再入院预测</span><span class="roadmap-tag">质量评审</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">核心指标目标</div>
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-val" style="color:var(--green)">≥80%</div><div class="metric-label">随访完成率<br>（30天内）</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--green)">＜2h</div><div class="metric-label">异常预警<br>响应时间</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--green)">-20%</div><div class="metric-label">90天再入院率<br>（相较基线）</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--green)">≥95%</div><div class="metric-label">随访数据<br>HIS回写率</div></div>
+    </div>
+  </div>
+
+
+
+  <div class="section">
+    <div class="section-label">风险与挑战</div>
+    <div class="risk-grid">
+      <div class="risk-card" style="border-color:var(--red)">
+        <div class="risk-card-title">⚠️ 医疗责任边界模糊</div>
+        <div class="risk-card-desc">AI随访中若错误判断患者状态，导致延误就医，平台可能面临医疗事故纠纷。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>明确AI随访定位为"信息采集工具"非诊疗，用户协议明示，异常一律转人工处置。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--amber)">
+        <div class="risk-card-title">⚠️ 患者随访疲劳</div>
+        <div class="risk-card-desc">频繁的随访推送可能引发患者厌烦，导致消息屏蔽或随访完成率持续下降。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>随访频次随恢复情况动态递减，随访内容保持简短（5分钟内完成），定期收集体验反馈。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--blue)">
+        <div class="risk-card-title">⚠️ 图片隐私泄露风险</div>
+        <div class="risk-card-desc">患者上传伤口、引流管等图片属于高度敏感医疗影像，存储传输须严格防护。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>图片端到端加密传输，仅责任医护可访问，定期清除，不参与任何模型训练。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--green)">
+        <div class="risk-card-title">⚠️ 医院推广阻力</div>
+        <div class="risk-card-desc">医生担忧增加工作量、护士对AI替代焦虑，可能导致院内推广受阻。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>强调减少电话随访人力，提供科室绩效报告赋能，设计医生专属简报减少操作负担。</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+
+
+<!-- ═══════════════════════════════════════════
+     SCENE 6: 个性化健康推荐
+═══════════════════════════════════════════ -->
+<div class="page" id="scene-personalized">
+<div class="detail-page">
+
+  <div class="scene-nav">
+    <span class="scene-nav-label">快速跳转：</span>
+    <button class="scene-nav-btn" onclick="showScene('pharmacy')">💊 药品导购</button>
+    <button class="scene-nav-btn" onclick="showScene('chronic')">📋 慢病管理</button>
+    <button class="scene-nav-btn" onclick="showScene('device')">🩺 器械选购</button>
+    <button class="scene-nav-btn" onclick="showScene('prescription')">📦 处方配送</button>
+    <button class="scene-nav-btn" onclick="showScene('followup')">🏥 院外随访</button>
+    <button class="scene-nav-btn" onclick="showScene('personalized')">🧬 个性化推荐</button>
+    <button class="scene-nav-btn" onclick="showScene('insurance')">📑 保险理赔</button>
+    <button class="scene-nav-btn" onclick="showScene('nutrition')">🥗 营养管理</button>
+    <button class="scene-nav-btn" onclick="showScene('maternalinfant')">🤰 母婴健康</button>
+    <button class="scene-nav-btn" onclick="showScene('labreport')">🔬 检验解读</button>
+    <button class="scene-nav-btn" onclick="showScene('tcm')">🌿 中医药</button>
+    <button class="scene-nav-btn" onclick="showScene('vaccine')">💉 疫苗管理</button>
+    <button class="scene-nav-btn" onclick="showScene('authentication')">🛡️ 药品核验</button>
+    <button class="scene-nav-btn" onclick="showScene('sensoryhealth')">👁️ 口腔眼科</button>
+    <button class="scene-nav-btn" onclick="showScene('adversereaction')">🚨 不良反应</button>
+    <button class="scene-nav-btn" onclick="showScene('elderlyrehab')">🦽 老年辅具</button>
+  </div>
+
+  <div class="detail-hero">
+    <div class="detail-badge" style="background:var(--pink-l);color:var(--pink)">
+      🧬 场景06 · Personalized Health Recommendation
+    </div>
+    <h1 class="detail-title">个性化健康推荐智能体</h1>
+    <p class="detail-sub">基于用户健康档案、历史购药记录、慢病标签和行为偏好，通过协同过滤与内容推荐算法，智能推送高度匹配的药品、保健品、健康内容和服务。</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">产品设计方案</div>
+    <div class="product-stages">
+      <div class="stage-card">
+        <div class="stage-num">STAGE 01</div>
+        <div class="stage-title">用户健康画像建立</div>
+        <ul class="stage-list">
+          <li>整合购药历史、随访记录、体检报告构建健康标签</li>
+          <li>病种标签：高血压/糖尿病/亚健康等多维分层</li>
+          <li>行为偏好：价格敏感度、品牌偏好、剂型偏好</li>
+          <li>生命周期标签：孕期/育儿/中老年等阶段标记</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 02</div>
+        <div class="stage-title">多策略推荐引擎</div>
+        <ul class="stage-list">
+          <li>协同过滤：相似人群的高频购买品推荐</li>
+          <li>内容推荐：基于病种匹配相关保健知识和产品</li>
+          <li>时序推荐：季节性、节气相关健康产品提前推送</li>
+          <li>补充推荐：已购药品关联的辅助营养品推荐</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 03</div>
+        <div class="stage-title">推荐效果闭环优化</div>
+        <ul class="stage-list">
+          <li>点击率/购买率/收藏率多维度效果追踪</li>
+          <li>用户反馈（"不感兴趣"）实时更新偏好模型</li>
+          <li>A/B测试框架持续验证推荐策略</li>
+          <li>推荐多样性控制，避免信息茧房效应</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">核心功能拆解</div>
+    <div class="features-grid">
+      <div class="feature-card" style="background:var(--pink-l);border-color:var(--pink)">
+        <div class="feature-icon">👤</div>
+        <div class="feature-title">健康画像引擎</div>
+        <ul class="feature-items">
+          <li>200+健康标签体系，多源数据融合</li>
+          <li>实时更新：每次购药/随访后自动刷新画像</li>
+          <li>隐私保护：画像计算在端侧完成，不上传原始数据</li>
+          <li>家庭画像：支持一账号管理全家健康档案</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--teal-l);border-color:var(--teal)">
+        <div class="feature-icon">🎯</div>
+        <div class="feature-title">精准推荐算法</div>
+        <ul class="feature-items">
+          <li>双塔模型：用户塔+商品塔实时向量匹配</li>
+          <li>知识图谱增强：疾病-营养素-产品链路推理</li>
+          <li>时序模型：捕捉用户需求随季节/病程的变化</li>
+          <li>多样性重排：MMR算法保证推荐列表多样性</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--amber-l);border-color:#b07020">
+        <div class="feature-icon">📢</div>
+        <div class="feature-title">推送策略管理</div>
+        <ul class="feature-items">
+          <li>推送频率智能控制，避免骚扰</li>
+          <li>多场景触达：首页feed/push通知/对话主动推荐</li>
+          <li>节假日/纪念日个性化健康关怀推送</li>
+          <li>用户可设置推荐偏好与免打扰时段</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--blue-l);border-color:var(--blue)">
+        <div class="feature-icon">📐</div>
+        <div class="feature-title">合规性过滤层</div>
+        <ul class="feature-items">
+          <li>处方药不进入推荐池（严格过滤）</li>
+          <li>保健品宣传用语合规审查（不得声称疗效）</li>
+          <li>基于年龄/病种的禁忌产品自动屏蔽</li>
+          <li>推荐可解释性：每条推荐显示"为什么推荐给你"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">技术架构</div>
+    <div class="arch-flow">
+      <div class="arch-layer-title">数据源层</div>
+      <div class="arch-nodes">
+        <span class="arch-node">购药历史</span>
+        <span class="arch-node">随访记录</span>
+        <span class="arch-node">体检报告</span>
+        <span class="arch-node">行为日志（浏览/收藏）</span>
+        <span class="arch-node">HIS健康档案（授权）</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">画像计算层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">健康标签体系（200+标签）</span>
+        <span class="arch-node highlight">用户向量实时更新</span>
+        <span class="arch-node">隐私计算（联邦学习）</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">推荐引擎层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">召回层（协同过滤+内容推荐）</span>
+        <span class="arch-node highlight">排序层（双塔模型）</span>
+        <span class="arch-node">多样性重排（MMR）</span>
+        <span class="arch-node">合规过滤层</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">分发与效果层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">多场景推荐位管理</span>
+        <span class="arch-node">A/B实验平台</span>
+        <span class="arch-node highlight">效果追踪（CTR/CVR）</span>
+        <span class="arch-node">模型在线更新</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">风险与挑战</div>
+    <div class="risk-grid">
+      <div class="risk-card" style="border-color:var(--red)">
+        <div class="risk-card-title">⚠️ 数据授权与隐私合规</div>
+        <div class="risk-card-desc">健康数据用于商业推荐须经用户明示授权，否则违反个人信息保护法，面临处罚与信任危机。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>分级授权（基础推荐/深度个性化），用户可随时撤销，数据不出域原则，定期隐私影响评估。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--amber)">
+        <div class="risk-card-title">⚠️ 推荐商业化与健康利益冲突</div>
+        <div class="risk-card-desc">若推荐逻辑被商业利益驱动（高利润>高适配），损害用户健康利益，引发信任崩塌。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>健康适配度作为不可降级的首要排序因子，商业权重有明确上限，推荐逻辑定期审计。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--blue)">
+        <div class="risk-card-title">⚠️ 冷启动问题</div>
+        <div class="risk-card-desc">新用户无历史数据，协同过滤失效，推荐准确率极低影响首次体验。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>新用户引导问卷（5题）快速建立初始画像，先用基于人群的规则推荐过渡。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--green)">
+        <div class="risk-card-title">⚠️ 信息茧房效应</div>
+        <div class="risk-card-desc">推荐系统长期强化用户已有偏好，导致视野收窄，错过对健康有益的新产品/知识。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>每次推荐列表保留20%探索槽，定期推送"健康新发现"跨品类内容。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">落地路径</div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--pink)">1</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 1 · 1-2个月</div>
+          <div class="roadmap-title">画像建设+基础推荐</div>
+          <div class="roadmap-desc">打通购药历史数据，建立200+标签体系，上线基于规则的病种推荐，验证点击率基线。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">画像建设</span><span class="roadmap-tag">规则推荐</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--pink)">2</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 2 · 2-4个月</div>
+          <div class="roadmap-title">算法升级+多场景推荐</div>
+          <div class="roadmap-desc">上线双塔模型，接入行为日志实时更新；覆盖首页/搜索/对话多推荐场景；A/B测试框架搭建。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">双塔模型</span><span class="roadmap-tag">多场景</span><span class="roadmap-tag">A/B测试</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--pink)">3</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 3 · 4-8个月</div>
+          <div class="roadmap-title">联邦学习+健康档案深度融合</div>
+          <div class="roadmap-desc">引入联邦学习保护HIS数据隐私，深度融合健康档案提升推荐精度；家庭账号推荐上线。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">联邦学习</span><span class="roadmap-tag">HIS融合</span><span class="roadmap-tag">家庭账号</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">核心指标目标</div>
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-val" style="color:var(--pink)">≥8%</div><div class="metric-label">推荐点击率<br>CTR</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--pink)">≥3%</div><div class="metric-label">推荐转化率<br>CVR</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--pink)">+30%</div><div class="metric-label">人均购药品类<br>（vs非推荐用户）</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--pink)">≤5%</div><div class="metric-label">"不感兴趣"<br>负反馈率</div></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     SCENE 7: 保险理赔辅助
+═══════════════════════════════════════════ -->
+<div class="page" id="scene-insurance">
+<div class="detail-page">
+
+  <div class="scene-nav">
+    <span class="scene-nav-label">快速跳转：</span>
+    <button class="scene-nav-btn" onclick="showScene('pharmacy')">💊 药品导购</button>
+    <button class="scene-nav-btn" onclick="showScene('chronic')">📋 慢病管理</button>
+    <button class="scene-nav-btn" onclick="showScene('device')">🩺 器械选购</button>
+    <button class="scene-nav-btn" onclick="showScene('prescription')">📦 处方配送</button>
+    <button class="scene-nav-btn" onclick="showScene('followup')">🏥 院外随访</button>
+    <button class="scene-nav-btn" onclick="showScene('personalized')">🧬 个性化推荐</button>
+    <button class="scene-nav-btn" onclick="showScene('insurance')">📑 保险理赔</button>
+    <button class="scene-nav-btn" onclick="showScene('nutrition')">🥗 营养管理</button>
+    <button class="scene-nav-btn" onclick="showScene('maternalinfant')">🤰 母婴健康</button>
+    <button class="scene-nav-btn" onclick="showScene('labreport')">🔬 检验解读</button>
+    <button class="scene-nav-btn" onclick="showScene('tcm')">🌿 中医药</button>
+    <button class="scene-nav-btn" onclick="showScene('vaccine')">💉 疫苗管理</button>
+    <button class="scene-nav-btn" onclick="showScene('authentication')">🛡️ 药品核验</button>
+    <button class="scene-nav-btn" onclick="showScene('sensoryhealth')">👁️ 口腔眼科</button>
+    <button class="scene-nav-btn" onclick="showScene('adversereaction')">🚨 不良反应</button>
+    <button class="scene-nav-btn" onclick="showScene('elderlyrehab')">🦽 老年辅具</button>
+  </div>
+
+  <div class="detail-hero">
+    <div class="detail-badge" style="background:var(--purple-l);color:var(--purple)">
+      📑 场景07 · Insurance Claims Assistant
+    </div>
+    <h1 class="detail-title">保险理赔辅助智能体</h1>
+    <p class="detail-sub">帮助患者梳理保险保障范围、智能整理理赔材料、自动匹配条款、预估赔付金额，全程跟踪理赔进度，将平均理赔周期从数周压缩到数天。</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">产品设计方案</div>
+    <div class="product-stages">
+      <div class="stage-card">
+        <div class="stage-num">STAGE 01</div>
+        <div class="stage-title">保单解读与保障查询</div>
+        <ul class="stage-list">
+          <li>上传保单PDF，AI自动解析保障范围与免赔额</li>
+          <li>自然语言问答："我这次住院能报多少？"</li>
+          <li>多保单并行管理，自动识别最优理赔路径</li>
+          <li>保障盲区提示：哪些常见医疗费用未被覆盖</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 02</div>
+        <div class="stage-title">材料整理与提交</div>
+        <ul class="stage-list">
+          <li>引导用户拍照上传发票、病历、出院小结</li>
+          <li>OCR识别票据，自动归类整理清单</li>
+          <li>材料完整性检查，缺失项明确提示补充</li>
+          <li>一键提交至保险公司理赔系统</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 03</div>
+        <div class="stage-title">进度追踪与争议辅助</div>
+        <ul class="stage-list">
+          <li>理赔进度实时推送（受理/审核/打款各节点）</li>
+          <li>预估赔付金额，与实际结果对比提示</li>
+          <li>理赔拒绝原因解读，辅助用户申诉</li>
+          <li>历史理赔记录归档，年度报告生成</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">核心功能拆解</div>
+    <div class="features-grid">
+      <div class="feature-card" style="background:var(--purple-l);border-color:var(--purple)">
+        <div class="feature-icon">📋</div>
+        <div class="feature-title">保单智能解析</div>
+        <ul class="feature-items">
+          <li>支持主流保险公司50+保单格式解析</li>
+          <li>条款结构化提取：保障项目/金额/免赔额/等待期</li>
+          <li>条款冲突检测（多保单重复赔付规则）</li>
+          <li>年度保额使用追踪，剩余额度提醒</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--blue-l);border-color:var(--blue)">
+        <div class="feature-icon">🔍</div>
+        <div class="feature-title">OCR票据识别</div>
+        <ul class="feature-items">
+          <li>医疗发票、收费明细、诊断证明自动识别</li>
+          <li>票据真实性初步核验（格式/印章检测）</li>
+          <li>费用分类：药品费/诊疗费/床位费等自动归类</li>
+          <li>金额合计自动核算，减少人工错漏</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--amber-l);border-color:#b07020">
+        <div class="feature-icon">💰</div>
+        <div class="feature-title">赔付预估模型</div>
+        <ul class="feature-items">
+          <li>基于保单条款+费用清单计算预估赔付额</li>
+          <li>区分医保报销后vs实际自付部分</li>
+          <li>历史同类案例参考赔付率</li>
+          <li>预估结果仅供参考，明确不作承诺</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--green-l);border-color:var(--green)">
+        <div class="feature-icon">🔗</div>
+        <div class="feature-title">保险公司接口集成</div>
+        <ul class="feature-items">
+          <li>对接主流保险公司理赔API（直接提交）</li>
+          <li>理赔状态实时回传，多渠道通知用户</li>
+          <li>拒赔原因结构化解读，非法律建议</li>
+          <li>申诉材料辅助生成（用户自行提交）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">技术架构</div>
+    <div class="arch-flow">
+      <div class="arch-layer-title">材料输入层</div>
+      <div class="arch-nodes">
+        <span class="arch-node">保单PDF上传</span>
+        <span class="arch-node">医疗发票拍照</span>
+        <span class="arch-node">病历/出院小结</span>
+        <span class="arch-node">用户自然语言问询</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">识别与解析层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">保单结构化解析（LLM+规则）</span>
+        <span class="arch-node highlight">医疗OCR识别引擎</span>
+        <span class="arch-node">票据真实性核验</span>
+        <span class="arch-node">费用自动分类</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">计算与匹配层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">条款-费用匹配引擎</span>
+        <span class="arch-node highlight">赔付预估模型</span>
+        <span class="arch-node">材料完整性校验</span>
+        <span class="arch-node">多保单优化路径</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">提交与跟踪层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">保险公司API对接（50+家）</span>
+        <span class="arch-node highlight">理赔状态实时同步</span>
+        <span class="arch-node">用户通知服务</span>
+        <span class="arch-node">历史归档与报告</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">风险与挑战</div>
+    <div class="risk-grid">
+      <div class="risk-card" style="border-color:var(--red)">
+        <div class="risk-card-title">⚠️ 法律边界风险</div>
+        <div class="risk-card-desc">提供条款解读和赔付预估可能被认定为保险经纪行为，须持牌经营或与持牌机构合作。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>明确定位为"辅助工具"而非"代理理赔"，所有解读加免责声明，与持牌保险经纪合作。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--amber)">
+        <div class="risk-card-title">⚠️ 票据真实性核验难度</div>
+        <div class="risk-card-desc">无法完全识别伪造票据，若辅助用户提交虚假材料，平台将承担共谋责任。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>明确声明平台不核实票据真实性，真实性责任归用户，在协议中清晰约定法律责任。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--blue)">
+        <div class="risk-card-title">⚠️ 保险公司API开放程度低</div>
+        <div class="risk-card-desc">大多数保险公司未开放标准理赔API，需逐家洽谈，初期覆盖率有限。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>优先接入头部10家保险公司，其余支持"材料包生成+引导用户自行提交"降级方案。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--green)">
+        <div class="risk-card-title">⚠️ 赔付预估偏差引发纠纷</div>
+        <div class="risk-card-desc">预估金额与实际赔付差异较大时，用户可能将责任归咎于平台，引发投诉。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>预估结果显著标注"仅供参考，最终以保险公司核定为准"，设计偏差原因解释功能。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">落地路径</div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--purple)">1</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 1 · 1-3个月</div>
+          <div class="roadmap-title">保单解析+材料整理工具</div>
+          <div class="roadmap-desc">上线保单PDF解析和票据OCR功能，提供理赔材料整理清单，辅助用户自行提交，验证用户留存与满意度。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">保单解析</span><span class="roadmap-tag">OCR识别</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--purple)">2</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 2 · 3-6个月</div>
+          <div class="roadmap-title">赔付预估+头部险企API对接</div>
+          <div class="roadmap-desc">上线赔付预估模型，完成5-10家头部保险公司API对接，实现理赔进度实时推送。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">预估模型</span><span class="roadmap-tag">API对接</span><span class="roadmap-tag">进度追踪</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--purple)">3</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 3 · 6-12个月</div>
+          <div class="roadmap-title">全险种覆盖+申诉辅助</div>
+          <div class="roadmap-desc">扩展至50+保险公司接入，上线拒赔申诉材料辅助生成；与医保数据打通，实现医保+商保一站式理赔。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">全险种</span><span class="roadmap-tag">申诉辅助</span><span class="roadmap-tag">医保联通</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">核心指标目标</div>
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-val" style="color:var(--purple)">-60%</div><div class="metric-label">平均理赔准备<br>时间（vs自行）</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--purple)">≥95%</div><div class="metric-label">材料完整率<br>（一次通过）</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--purple)">±15%</div><div class="metric-label">赔付预估偏差<br>（vs实际）</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--purple)">≥4.6⭐</div><div class="metric-label">用户体验<br>满意度评分</div></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     SCENE 8: 营养健康管理
+═══════════════════════════════════════════ -->
+<div class="page" id="scene-nutrition">
+<div class="detail-page">
+
+  <div class="scene-nav">
+    <span class="scene-nav-label">快速跳转：</span>
+    <button class="scene-nav-btn" onclick="showScene('pharmacy')">💊 药品导购</button>
+    <button class="scene-nav-btn" onclick="showScene('chronic')">📋 慢病管理</button>
+    <button class="scene-nav-btn" onclick="showScene('device')">🩺 器械选购</button>
+    <button class="scene-nav-btn" onclick="showScene('prescription')">📦 处方配送</button>
+    <button class="scene-nav-btn" onclick="showScene('followup')">🏥 院外随访</button>
+    <button class="scene-nav-btn" onclick="showScene('personalized')">🧬 个性化推荐</button>
+    <button class="scene-nav-btn" onclick="showScene('insurance')">📑 保险理赔</button>
+    <button class="scene-nav-btn" onclick="showScene('nutrition')">🥗 营养管理</button>
+    <button class="scene-nav-btn" onclick="showScene('maternalinfant')">🤰 母婴健康</button>
+    <button class="scene-nav-btn" onclick="showScene('labreport')">🔬 检验解读</button>
+    <button class="scene-nav-btn" onclick="showScene('tcm')">🌿 中医药</button>
+    <button class="scene-nav-btn" onclick="showScene('vaccine')">💉 疫苗管理</button>
+    <button class="scene-nav-btn" onclick="showScene('authentication')">🛡️ 药品核验</button>
+    <button class="scene-nav-btn" onclick="showScene('sensoryhealth')">👁️ 口腔眼科</button>
+    <button class="scene-nav-btn" onclick="showScene('adversereaction')">🚨 不良反应</button>
+    <button class="scene-nav-btn" onclick="showScene('elderlyrehab')">🦽 老年辅具</button>
+  </div>
+
+  <div class="detail-hero">
+    <div class="detail-badge" style="background:var(--teal-l);color:var(--teal)">
+      🥗 场景08 · Nutrition Health Management
+    </div>
+    <h1 class="detail-title">营养健康管理智能体</h1>
+    <p class="detail-sub">结合用户病情、体检指标和生活习惯，提供个性化膳食建议、营养素补充方案、运动计划和体重管理服务，将健康管理从被动治疗转向主动预防。</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">产品设计方案</div>
+    <div class="product-stages">
+      <div class="stage-card">
+        <div class="stage-num">STAGE 01</div>
+        <div class="stage-title">健康基线评估</div>
+        <ul class="stage-list">
+          <li>对话采集：身高体重、慢病史、过敏史、饮食偏好</li>
+          <li>体检报告解读：血脂、血糖、尿酸等关键指标分析</li>
+          <li>营养状况评估：常见缺乏风险筛查</li>
+          <li>生成个性化健康管理目标（减重/降脂/控糖等）</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 02</div>
+        <div class="stage-title">膳食与运动计划</div>
+        <ul class="stage-list">
+          <li>每日膳食建议（早/午/晚餐食材组合）</li>
+          <li>营养素缺口分析，推荐针对性补充剂</li>
+          <li>运动计划制定（类型/强度/频次/时长）</li>
+          <li>一键记录三餐（文字/图片识别食物热量）</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 03</div>
+        <div class="stage-title">追踪与动态调整</div>
+        <ul class="stage-list">
+          <li>体重/体脂/血糖等指标趋势可视化</li>
+          <li>目标达成进度激励（勋章/里程碑提醒）</li>
+          <li>计划动态优化：未达标时智能调整膳食/运动方案</li>
+          <li>月度健康报告，支持分享给家庭医生</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">核心功能拆解</div>
+    <div class="features-grid">
+      <div class="feature-card" style="background:var(--teal-l);border-color:var(--teal)">
+        <div class="feature-icon">🥦</div>
+        <div class="feature-title">营养分析引擎</div>
+        <ul class="feature-items">
+          <li>100万+食物营养数据库（含中国本土食物）</li>
+          <li>图片识别食物：拍照即估算营养成分</li>
+          <li>病种-营养需求映射（糖尿病低GI/痛风低嘌呤）</li>
+          <li>营养素交互分析（如钙吸收需同时补充维D）</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--green-l);border-color:var(--green)">
+        <div class="feature-icon">🏃</div>
+        <div class="feature-title">运动计划管理</div>
+        <ul class="feature-items">
+          <li>基于心肺功能评估的个性化运动强度</li>
+          <li>慢病运动禁忌自动过滤（心脏病避免高强度）</li>
+          <li>微信运动/苹果健康/小米手环数据同步</li>
+          <li>运动后恢复建议（拉伸/补水/营养补充）</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--amber-l);border-color:#b07020">
+        <div class="feature-icon">📦</div>
+        <div class="feature-title">补充剂精准推荐</div>
+        <ul class="feature-items">
+          <li>营养缺口→补充剂推荐的可解释路径</li>
+          <li>品牌比选：成分、含量、吸收率横向对比</li>
+          <li>避免过量：同时服用多种补充剂的总摄入核算</li>
+          <li>与药物相互作用检查（如鱼油与抗凝药）</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--blue-l);border-color:var(--blue)">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">数据追踪与激励</div>
+        <ul class="feature-items">
+          <li>体重/腰围/体脂趋势图（周/月/季度）</li>
+          <li>血糖/血压等指标与饮食运动相关性分析</li>
+          <li>打卡连续天数、目标完成激励体系</li>
+          <li>健康报告一键导出（PDF/分享给医生）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">技术架构</div>
+    <div class="arch-flow">
+      <div class="arch-layer-title">数据采集层</div>
+      <div class="arch-nodes">
+        <span class="arch-node">体检报告（OCR/结构化）</span>
+        <span class="arch-node">三餐记录（文字/图片）</span>
+        <span class="arch-node">运动设备数据</span>
+        <span class="arch-node">体重/体脂秤数据</span>
+        <span class="arch-node">血糖仪/血压计</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">分析计算层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">食物图像识别模型</span>
+        <span class="arch-node highlight">营养素摄入计算引擎</span>
+        <span class="arch-node">运动消耗估算</span>
+        <span class="arch-node">健康风险评分</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">方案生成层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">LLM个性化膳食方案生成</span>
+        <span class="arch-node highlight">运动计划生成（规则+AI）</span>
+        <span class="arch-node">补充剂推荐引擎</span>
+        <span class="arch-node">方案合规性检查</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">追踪与优化层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">趋势分析与可视化</span>
+        <span class="arch-node">目标达成预测</span>
+        <span class="arch-node highlight">方案动态调整引擎</span>
+        <span class="arch-node">月度报告生成</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">风险与挑战</div>
+    <div class="risk-grid">
+      <div class="risk-card" style="border-color:var(--red)">
+        <div class="risk-card-title">⚠️ 营养建议医学边界</div>
+        <div class="risk-card-desc">营养建议若针对疾病治疗（如"通过饮食控制糖尿病"），可能被认定为医疗行为，需执业资质。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>定位于"健康促进"而非"疾病治疗"，建议用语聚焦"有助于"而非"治疗"，营养师内容审核。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--amber)">
+        <div class="risk-card-title">⚠️ 用户长期留存难度高</div>
+        <div class="risk-card-desc">健康管理类产品用户初期热情高，3个月后流失严重，难以形成持续习惯。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>强社交激励（家庭打卡/好友排行）、阶段性目标设计、失去连续记录时温和唤回机制。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--blue)">
+        <div class="risk-card-title">⚠️ 食物识别精度局限</div>
+        <div class="risk-card-desc">中国菜肴种类繁多、烹饪方式复杂，图像识别营养成分误差可能较大，影响饮食计划准确性。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>识别置信度低时引导用户手动确认，建立中国本土菜肴数据集持续优化，明示估算误差范围。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--green)">
+        <div class="risk-card-title">⚠️ 补充剂推荐商业化争议</div>
+        <div class="risk-card-desc">营养素缺口分析结合补充剂推荐销售，易被质疑"制造焦虑""过度推销"，损害专业公信力。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>推荐逻辑完全透明可解释，提供"食物补充替代方案"，商业推荐权重设上限，引入第三方营养师审核。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">落地路径</div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--teal)">1</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 1 · 1-2个月</div>
+          <div class="roadmap-title">基础评估+膳食建议</div>
+          <div class="roadmap-desc">上线健康基线评估问卷，接入食物营养数据库，提供文字版每日膳食建议，验证用户留存率。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">健康评估</span><span class="roadmap-tag">膳食建议</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--teal)">2</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 2 · 2-5个月</div>
+          <div class="roadmap-title">图像识别+运动追踪+设备接入</div>
+          <div class="roadmap-desc">上线食物图像识别，接入主流运动手环/体重秤数据，运动计划模块上线，数据追踪可视化。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">图像识别</span><span class="roadmap-tag">设备接入</span><span class="roadmap-tag">运动计划</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--teal)">3</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 3 · 5-9个月</div>
+          <div class="roadmap-title">AI动态优化+补充剂推荐+社交</div>
+          <div class="roadmap-desc">上线AI动态调整膳食方案，完善营养素补充剂推荐闭环，家庭/好友社交激励体系，与家庭医生协作。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">AI动态调整</span><span class="roadmap-tag">补充剂推荐</span><span class="roadmap-tag">社交激励</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">核心指标目标</div>
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-val" style="color:var(--teal)">≥40%</div><div class="metric-label">90天用户<br>留存率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--teal)">≥70%</div><div class="metric-label">每日记录<br>完成率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--teal)">≥85%</div><div class="metric-label">食物图像<br>识别准确率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--teal)">+15%</div><div class="metric-label">保健品连带<br>销售转化</div></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCENE 9: 母婴健康管理
+═══════════════════════════════════════════ -->
+<div class="page" id="scene-maternalinfant">
+<div class="detail-page">
+  <div class="scene-nav">
+    <span class="scene-nav-label">快速跳转：</span>
+    <button class="scene-nav-btn" onclick="showScene('pharmacy')">💊 药品导购</button>
+    <button class="scene-nav-btn" onclick="showScene('chronic')">📋 慢病管理</button>
+    <button class="scene-nav-btn" onclick="showScene('device')">🩺 器械选购</button>
+    <button class="scene-nav-btn" onclick="showScene('prescription')">📦 处方配送</button>
+    <button class="scene-nav-btn" onclick="showScene('followup')">🏥 院外随访</button>
+    <button class="scene-nav-btn" onclick="showScene('personalized')">🧬 个性化推荐</button>
+    <button class="scene-nav-btn" onclick="showScene('insurance')">📑 保险理赔</button>
+    <button class="scene-nav-btn" onclick="showScene('nutrition')">🥗 营养管理</button>
+    <button class="scene-nav-btn" onclick="showScene('maternalinfant')">🤰 母婴健康</button>
+    <button class="scene-nav-btn" onclick="showScene('labreport')">🔬 检验解读</button>
+    <button class="scene-nav-btn" onclick="showScene('tcm')">🌿 中医药</button>
+    <button class="scene-nav-btn" onclick="showScene('vaccine')">💉 疫苗管理</button>
+    <button class="scene-nav-btn" onclick="showScene('authentication')">🛡️ 药品核验</button>
+    <button class="scene-nav-btn" onclick="showScene('sensoryhealth')">👁️ 口腔眼科</button>
+    <button class="scene-nav-btn" onclick="showScene('adversereaction')">🚨 不良反应</button>
+    <button class="scene-nav-btn" onclick="showScene('elderlyrehab')">🦽 老年辅具</button>
+  </div>
+  <div class="detail-hero">
+    <div class="detail-badge" style="background:var(--pink-l);color:var(--pink)">🤰 场景09 · Maternal &amp; Infant Health</div>
+    <h1 class="detail-title">母婴健康管理智能体</h1>
+    <p class="detail-sub">覆盖备孕、孕期、产后及婴幼儿成长全周期，提供孕期营养指导、产检提醒、婴幼儿产品精准选购和产后康复支持，是母婴药店和电商平台的核心增值场景。</p>
+  </div>
+  <div class="section">
+    <div class="section-label">产品设计方案</div>
+    <div class="product-stages">
+      <div class="stage-card">
+        <div class="stage-num">STAGE 01</div>
+        <div class="stage-title">孕期全程陪伴</div>
+        <ul class="stage-list">
+          <li>录入末次月经/预产期，自动生成孕周日历与产检提醒</li>
+          <li>按孕周推送营养需求（叶酸/铁/DHA/钙）及膳食建议</li>
+          <li>孕期用药安全查询：FDA/CFDA分级即时查询，禁忌高亮提示</li>
+          <li>孕期不适症状（孕吐/水肿/腰痛）居家缓解方案推荐</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 02</div>
+        <div class="stage-title">婴幼儿产品选购</div>
+        <ul class="stage-list">
+          <li>配方奶粉选型：月龄、过敏史、家庭预算三维匹配</li>
+          <li>辅食添加指导：按月龄推荐食材种类与添加顺序</li>
+          <li>婴幼儿OTC用药指导：退烧药/止泻药/益生菌安全剂量计算</li>
+          <li>成分安全查询：扫码查婴幼儿产品成分安全等级</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 03</div>
+        <div class="stage-title">产后康复与育儿</div>
+        <ul class="stage-list">
+          <li>产后营养补充方案（哺乳期用药禁忌强制提示）</li>
+          <li>婴幼儿生长曲线追踪：身高/体重/头围与WHO标准对比</li>
+          <li>疫苗接种计划联动（打通场景12）</li>
+          <li>儿童常见病（感冒/腹泻/湿疹）居家处理指引</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">核心功能拆解</div>
+    <div class="features-grid">
+      <div class="feature-card" style="background:var(--pink-l);border-color:var(--pink)">
+        <div class="feature-icon">📅</div>
+        <div class="feature-title">孕周智能日历</div>
+        <ul class="feature-items">
+          <li>胎儿发育阶段可视化展示</li>
+          <li>产检项目提醒（唐筛/四维/糖耐等）</li>
+          <li>营养素缺口分析与补充产品推荐</li>
+          <li>高危妊娠标签识别，及时转诊提示</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--blue-l);border-color:var(--blue)">
+        <div class="feature-icon">🍼</div>
+        <div class="feature-title">婴幼儿产品选购引擎</div>
+        <ul class="feature-items">
+          <li>月龄+体质+过敏史三要素精准匹配</li>
+          <li>奶粉/辅食/护肤品成分安全等级数据库</li>
+          <li>用户评价+专业测评双维度推荐排序</li>
+          <li>历史购买记录追踪，自动续购提醒</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--green-l);border-color:var(--green)">
+        <div class="feature-icon">📈</div>
+        <div class="feature-title">生长发育追踪</div>
+        <ul class="feature-items">
+          <li>WHO生长曲线可视化，百分位自动标注</li>
+          <li>发育迟缓/超重预警，建议专科就诊</li>
+          <li>运动里程碑提示（翻身/爬行/走路）</li>
+          <li>家庭成员共享，多孩管理支持</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--amber-l);border-color:#b07020">
+        <div class="feature-icon">🛡️</div>
+        <div class="feature-title">哺乳期用药安全</div>
+        <ul class="feature-items">
+          <li>LactMed数据库集成，哺乳安全分级</li>
+          <li>禁忌药物强制拦截，主动提示替代方案</li>
+          <li>中草药/保健品哺乳期安全性标注</li>
+          <li>紧急情况快速连线线上儿科医生</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">技术架构</div>
+    <div class="arch-flow">
+      <div class="arch-layer-title">用户输入层</div>
+      <div class="arch-nodes">
+        <span class="arch-node">孕周/月龄录入</span>
+        <span class="arch-node">症状/问题描述</span>
+        <span class="arch-node">产品扫码查询</span>
+        <span class="arch-node">生长数据记录</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">知识库层</div>
+      <div class="arch-nodes">
+        <span class="arch-node highlight">孕产期营养指南RAG</span>
+        <span class="arch-node highlight">婴幼儿用药安全数据库</span>
+        <span class="arch-node">WHO生长曲线标准</span>
+        <span class="arch-node">产品成分安全评级库</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">安全审核层（必经）</div>
+      <div class="arch-nodes">
+        <span class="arch-node" style="background:#fee;border-color:#c44">孕期/哺乳期用药禁忌拦截</span>
+        <span class="arch-node" style="background:#fee;border-color:#c44">高危妊娠强制转诊</span>
+        <span class="arch-node" style="background:#fee;border-color:#c44">婴幼儿剂量上限校验</span>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-layer-title">输出层</div>
+      <div class="arch-nodes">
+        <span class="arch-node">个性化孕周推送</span>
+        <span class="arch-node highlight">产品推荐+下单链路</span>
+        <span class="arch-node">生长曲线可视化</span>
+        <span class="arch-node highlight">医生在线咨询跳转</span>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">落地路径</div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--pink)">1</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 1 · 1-2个月</div>
+          <div class="roadmap-title">孕周日历+基础用药安全</div>
+          <div class="roadmap-desc">上线孕周计算器与产检提醒，集成孕期/哺乳期用药禁忌查询，接入营养补充品推荐链路，验证核心场景留存。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">孕周日历</span><span class="roadmap-tag">用药安全</span><span class="roadmap-tag">营养推荐</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--pink)">2</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 2 · 2-5个月</div>
+          <div class="roadmap-title">婴幼儿选购+生长追踪</div>
+          <div class="roadmap-desc">上线配方奶粉/辅食智能选购，集成WHO生长曲线追踪模块，产品成分安全扫码查询，联动疫苗接种场景。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">产品选购</span><span class="roadmap-tag">生长追踪</span><span class="roadmap-tag">扫码查询</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--pink)">3</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 3 · 5-9个月</div>
+          <div class="roadmap-title">全周期AI陪伴+家庭共享</div>
+          <div class="roadmap-desc">多孩/多成员健康档案共享，儿科医生在线联动，AI个性化育儿知识推送，积分成长体系提升长期留存。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">家庭共享</span><span class="roadmap-tag">医生联动</span><span class="roadmap-tag">AI育儿</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">核心指标目标</div>
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-val" style="color:var(--pink)">≥60%</div><div class="metric-label">孕期用户<br>90天留存</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--pink)">100%</div><div class="metric-label">哺乳期禁忌<br>药物拦截率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--pink)">≥35%</div><div class="metric-label">婴幼品问询<br>购买转化率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--pink)">≥4.7</div><div class="metric-label">用户满意度<br>（5分制）</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">风险与挑战</div>
+    <div class="risk-grid">
+      <div class="risk-card" style="border-color:var(--red)">
+        <div class="risk-card-title">⚠️ 用药安全极高风险</div>
+        <div class="risk-card-desc">孕期及哺乳期用药错误可能直接危害胎儿/婴儿健康，任何推荐失误后果严重。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>孕期所有用药推荐必须经妇产科药师审核，处方药零推荐，禁忌拦截率要求100%。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--amber)">
+        <div class="risk-card-title">⚠️ 育儿焦虑放大风险</div>
+        <div class="risk-card-desc">生长曲线追踪和发育里程碑提示若处理不当，易加重新手父母焦虑，引发不必要的就医。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>结果呈现以正向鼓励为主，偏差提示使用温和语言，建议"观察一周后复查"而非立即就医。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--blue)">
+        <div class="risk-card-title">⚠️ 产品推荐商业化争议</div>
+        <div class="risk-card-desc">配方奶粉等母婴产品推荐涉及商业利益，若缺乏透明度易引发信任危机。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>推荐算法逻辑公开透明，标注"赞助推荐"与"算法推荐"，母乳喂养始终作为首选方案呈现。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--green)">
+        <div class="risk-card-title">⚠️ 数据敏感性</div>
+        <div class="risk-card-desc">孕产期健康数据属于极敏感个人信息，泄露或滥用将严重损害用户信任。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>数据最小化采集原则，存储加密等保三级，明确用户授权范围，支持一键删除全部数据。</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCENE 10: 检验报告智能解读
+═══════════════════════════════════════════ -->
+<div class="page" id="scene-labreport">
+<div class="detail-page">
+  <div class="scene-nav">
+    <span class="scene-nav-label">快速跳转：</span>
+    <button class="scene-nav-btn" onclick="showScene('pharmacy')">💊 药品导购</button>
+    <button class="scene-nav-btn" onclick="showScene('chronic')">📋 慢病管理</button>
+    <button class="scene-nav-btn" onclick="showScene('device')">🩺 器械选购</button>
+    <button class="scene-nav-btn" onclick="showScene('prescription')">📦 处方配送</button>
+    <button class="scene-nav-btn" onclick="showScene('followup')">🏥 院外随访</button>
+    <button class="scene-nav-btn" onclick="showScene('personalized')">🧬 个性化推荐</button>
+    <button class="scene-nav-btn" onclick="showScene('insurance')">📑 保险理赔</button>
+    <button class="scene-nav-btn" onclick="showScene('nutrition')">🥗 营养管理</button>
+    <button class="scene-nav-btn" onclick="showScene('maternalinfant')">🤰 母婴健康</button>
+    <button class="scene-nav-btn" onclick="showScene('labreport')">🔬 检验解读</button>
+    <button class="scene-nav-btn" onclick="showScene('tcm')">🌿 中医药</button>
+    <button class="scene-nav-btn" onclick="showScene('vaccine')">💉 疫苗管理</button>
+    <button class="scene-nav-btn" onclick="showScene('authentication')">🛡️ 药品核验</button>
+    <button class="scene-nav-btn" onclick="showScene('sensoryhealth')">👁️ 口腔眼科</button>
+    <button class="scene-nav-btn" onclick="showScene('adversereaction')">🚨 不良反应</button>
+    <button class="scene-nav-btn" onclick="showScene('elderlyrehab')">🦽 老年辅具</button>
+  </div>
+  <div class="detail-hero">
+    <div class="detail-badge" style="background:var(--blue-l);color:var(--blue)">🔬 场景10 · Lab Report Interpreter</div>
+    <h1 class="detail-title">检验报告智能解读智能体</h1>
+    <p class="detail-sub">用户上传体检报告或化验单，智能体自动提取异常指标、用通俗语言解读含义、关联推荐保健品/药品或就医建议，是医疗零售场景最重要的流量入口之一。</p>
+  </div>
+  <div class="section">
+    <div class="section-label">产品设计方案</div>
+    <div class="product-stages">
+      <div class="stage-card">
+        <div class="stage-num">STAGE 01</div>
+        <div class="stage-title">报告识别与解析</div>
+        <ul class="stage-list">
+          <li>OCR识别体检报告/化验单（PDF/图片/拍照均支持）</li>
+          <li>结构化提取：项目名称、检测值、参考范围、异常标记</li>
+          <li>多家医院报告格式自适应解析（HIS报告/体检中心报告）</li>
+          <li>历史报告对比：指标趋势变化自动标注</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 02</div>
+        <div class="stage-title">通俗语言解读</div>
+        <ul class="stage-list">
+          <li>异常指标用白话文解释含义（"甘油三酯偏高=血脂高"）</li>
+          <li>风险等级分类：轻度偏高/中度异常/严重须就医</li>
+          <li>指标间关联解读（血糖+胰岛素+糖化血红蛋白综合分析）</li>
+          <li>多轮对话：用户可追问"这个数字意味着什么"</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 03</div>
+        <div class="stage-title">干预推荐与转化</div>
+        <ul class="stage-list">
+          <li>轻度异常：推荐生活方式调整+相关保健品/OTC</li>
+          <li>中度异常：推荐就医同时推荐辅助性产品</li>
+          <li>严重异常：仅引导就医，拒绝推荐任何商品</li>
+          <li>报告存入健康档案，与慢病管理场景联动</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">核心功能拆解</div>
+    <div class="features-grid">
+      <div class="feature-card" style="background:var(--blue-l);border-color:var(--blue)">
+        <div class="feature-icon">📄</div>
+        <div class="feature-title">多格式报告解析</div>
+        <ul class="feature-items">
+          <li>支持PDF、图片、手机拍照多种输入</li>
+          <li>自适应解析200+医疗机构报告格式</li>
+          <li>血常规/生化/尿常规/肿瘤标志物全覆盖</li>
+          <li>历史报告管理，趋势图自动生成</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--teal-l);border-color:var(--teal)">
+        <div class="feature-icon">💬</div>
+        <div class="feature-title">通俗解读引擎</div>
+        <ul class="feature-items">
+          <li>医学术语→白话文映射知识库</li>
+          <li>三级异常分层：关注/复查/立即就医</li>
+          <li>个性化解读（结合年龄/性别/病史）</li>
+          <li>支持家属代查，多人报告管理</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--green-l);border-color:var(--green)">
+        <div class="feature-icon">🛒</div>
+        <div class="feature-title">精准产品关联</div>
+        <ul class="feature-items">
+          <li>异常指标→推荐产品逻辑透明可解释</li>
+          <li>保健品/OTC按异常严重程度分级推荐</li>
+          <li>严重异常完全屏蔽商品推荐</li>
+          <li>一键导入慢病管理模块</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--amber-l);border-color:#b07020">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">健康档案集成</div>
+        <ul class="feature-items">
+          <li>报告自动归档至个人健康档案</li>
+          <li>跨报告指标追踪（年度体检变化）</li>
+          <li>就医时一键生成摘要供医生参考</li>
+          <li>与场景02/05/06深度联动</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">落地路径</div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--blue)">1</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 1 · 1-3个月</div>
+          <div class="roadmap-title">OCR解析+基础解读</div>
+          <div class="roadmap-desc">搭建报告OCR识别能力，覆盖主流体检中心格式；上线基础异常指标解读，人工医生复核所有严重异常输出。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">OCR识别</span><span class="roadmap-tag">异常解读</span><span class="roadmap-tag">医生复核</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--blue)">2</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 2 · 3-6个月</div>
+          <div class="roadmap-title">产品关联+档案建立</div>
+          <div class="roadmap-desc">打通商品推荐链路，建立异常指标→产品推荐规则库；报告归档与健康档案打通，支持历史趋势对比。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">产品推荐</span><span class="roadmap-tag">健康档案</span><span class="roadmap-tag">趋势分析</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--blue)">3</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 3 · 6-10个月</div>
+          <div class="roadmap-title">跨场景联动+AI深度解读</div>
+          <div class="roadmap-desc">与慢病管理、个性化推荐、院外随访场景全面打通；上线AI综合健康风险评估报告，支持家庭多成员管理。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">跨场景联动</span><span class="roadmap-tag">风险评估</span><span class="roadmap-tag">家庭管理</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">核心指标目标</div>
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-val" style="color:var(--blue)">≥92%</div><div class="metric-label">报告OCR<br>识别准确率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--blue)">100%</div><div class="metric-label">严重异常<br>就医导流率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--blue)">≥30%</div><div class="metric-label">轻度异常<br>产品转化率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--blue)">≥88%</div><div class="metric-label">用户解读<br>满意度</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">风险与挑战</div>
+    <div class="risk-grid">
+      <div class="risk-card" style="border-color:var(--red)">
+        <div class="risk-card-title">⚠️ 误导诊断风险</div>
+        <div class="risk-card-desc">将报告解读等同于医疗诊断，导致用户错误自我判断延误就医。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>每次输出前置免责声明，严重异常只输出"请立即就医"不做任何原因解释，拒绝推荐任何商品。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--amber)">
+        <div class="risk-card-title">⚠️ OCR识别错误风险</div>
+        <div class="risk-card-desc">报告格式多样，OCR误读数值可能导致本无异常的指标被标记为危险。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>置信度低于阈值时提示用户手动确认，关键数值双重校验，保留人工复核通道。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--blue)">
+        <div class="risk-card-title">⚠️ 过度商业化质疑</div>
+        <div class="risk-card-desc">异常指标→商品推荐的链路若过于激进，用户会质疑"制造恐慌卖产品"。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>推荐逻辑完全公开，中度以上异常不推商品，轻度异常推荐权重设上限，提供"不需要额外补充"的诚实选项。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--green)">
+        <div class="risk-card-title">⚠️ 医疗数据合规</div>
+        <div class="risk-card-desc">体检报告属于最高等级医疗隐私数据，存储和使用须符合《个人信息保护法》。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>报告数据本地处理优先，上传数据即时加密，明确告知用途，支持随时删除，不用于任何商业画像。</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCENE 11: 中医药智能服务
+═══════════════════════════════════════════ -->
+<div class="page" id="scene-tcm">
+<div class="detail-page">
+  <div class="scene-nav">
+    <span class="scene-nav-label">快速跳转：</span>
+    <button class="scene-nav-btn" onclick="showScene('pharmacy')">💊 药品导购</button>
+    <button class="scene-nav-btn" onclick="showScene('chronic')">📋 慢病管理</button>
+    <button class="scene-nav-btn" onclick="showScene('device')">🩺 器械选购</button>
+    <button class="scene-nav-btn" onclick="showScene('prescription')">📦 处方配送</button>
+    <button class="scene-nav-btn" onclick="showScene('followup')">🏥 院外随访</button>
+    <button class="scene-nav-btn" onclick="showScene('personalized')">🧬 个性化推荐</button>
+    <button class="scene-nav-btn" onclick="showScene('insurance')">📑 保险理赔</button>
+    <button class="scene-nav-btn" onclick="showScene('nutrition')">🥗 营养管理</button>
+    <button class="scene-nav-btn" onclick="showScene('maternalinfant')">🤰 母婴健康</button>
+    <button class="scene-nav-btn" onclick="showScene('labreport')">🔬 检验解读</button>
+    <button class="scene-nav-btn" onclick="showScene('tcm')">🌿 中医药</button>
+    <button class="scene-nav-btn" onclick="showScene('vaccine')">💉 疫苗管理</button>
+    <button class="scene-nav-btn" onclick="showScene('authentication')">🛡️ 药品核验</button>
+    <button class="scene-nav-btn" onclick="showScene('sensoryhealth')">👁️ 口腔眼科</button>
+    <button class="scene-nav-btn" onclick="showScene('adversereaction')">🚨 不良反应</button>
+    <button class="scene-nav-btn" onclick="showScene('elderlyrehab')">🦽 老年辅具</button>
+  </div>
+  <div class="detail-hero">
+    <div class="detail-badge" style="background:var(--amber-l);color:var(--amber)">🌿 场景11 · TCM Smart Service</div>
+    <h1 class="detail-title">中医药智能服务智能体</h1>
+    <p class="detail-sub">基于中医体质辨识理论，通过多轮问诊对话判断用户体质，辨证推荐中成药与调理方案，并提供中药配伍禁忌查询，填补西药导购体系对中医药场景的覆盖空白。</p>
+  </div>
+  <div class="section">
+    <div class="section-label">产品设计方案</div>
+    <div class="product-stages">
+      <div class="stage-card">
+        <div class="stage-num">STAGE 01</div>
+        <div class="stage-title">体质辨识问诊</div>
+        <ul class="stage-list">
+          <li>基于《中医体质分类与判定》标准（九种体质）</li>
+          <li>多轮问卷式对话：舌苔、面色、睡眠、饮食偏好、大便等</li>
+          <li>体质得分雷达图可视化，主体质+兼夹体质综合判断</li>
+          <li>体质档案建立，季节性动态更新</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 02</div>
+        <div class="stage-title">中成药辨证推荐</div>
+        <ul class="stage-list">
+          <li>症状描述→证型匹配→中成药推荐三步流程</li>
+          <li>同病异治：相同症状按不同证型推荐不同方药</li>
+          <li>中成药说明书知识库：功效、用法、禁忌、剂型</li>
+          <li>中西药相互作用查询（如含朱砂/雄黄成分提示）</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 03</div>
+        <div class="stage-title">调理方案与商品推荐</div>
+        <ul class="stage-list">
+          <li>膳食调理建议（药食同源食材推荐）</li>
+          <li>经络穴位保健指导（图文+视频）</li>
+          <li>代茶饮/膏方等中医保健产品推荐</li>
+          <li>重症/复杂证型引导线上中医师问诊</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">核心功能拆解</div>
+    <div class="features-grid">
+      <div class="feature-card" style="background:var(--amber-l);border-color:#b07020">
+        <div class="feature-icon">🔮</div>
+        <div class="feature-title">体质辨识引擎</div>
+        <ul class="feature-items">
+          <li>九种体质标准化评分算法</li>
+          <li>兼夹体质综合权重计算</li>
+          <li>季节/年龄体质动态调整模型</li>
+          <li>体质雷达图可视化输出</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--green-l);border-color:var(--green)">
+        <div class="feature-icon">📚</div>
+        <div class="feature-title">中医药知识库RAG</div>
+        <ul class="feature-items">
+          <li>5000+中成药说明书向量化索引</li>
+          <li>证型—药品映射知识图谱</li>
+          <li>中西药相互作用规则库</li>
+          <li>药食同源食材功效数据库</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--teal-l);border-color:var(--teal)">
+        <div class="feature-icon">⚖️</div>
+        <div class="feature-title">配伍安全审核</div>
+        <ul class="feature-items">
+          <li>"十八反""十九畏"配伍禁忌自动检测</li>
+          <li>含毒性成分（附子/乌头等）剂量预警</li>
+          <li>中西药联用安全校验</li>
+          <li>孕妇禁忌中成药强制拦截</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--blue-l);border-color:var(--blue)">
+        <div class="feature-icon">👨‍⚕️</div>
+        <div class="feature-title">中医师在线协作</div>
+        <ul class="feature-items">
+          <li>复杂证型AI无法确定时无缝转人工</li>
+          <li>中医师审核AI推荐结果，提高信任度</li>
+          <li>名老中医经验方知识库沉淀</li>
+          <li>在线中医问诊流量分发</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">落地路径</div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--amber)">1</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 1 · 1-3个月</div>
+          <div class="roadmap-title">体质辨识+中成药知识库</div>
+          <div class="roadmap-desc">上线九种体质评估问卷，建立中成药知识库与配伍禁忌规则，所有推荐经中药师审核，覆盖感冒/失眠/消化等高频证型。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">体质辨识</span><span class="roadmap-tag">知识库</span><span class="roadmap-tag">药师审核</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--amber)">2</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 2 · 3-6个月</div>
+          <div class="roadmap-title">膳食调理+保健产品推荐</div>
+          <div class="roadmap-desc">扩充药食同源食材库，上线代茶饮/膏方等保健品推荐链路，接入中医师在线问诊，覆盖慢病调理高价值场景。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">调理方案</span><span class="roadmap-tag">保健推荐</span><span class="roadmap-tag">医师联动</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--amber)">3</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 3 · 6-12个月</div>
+          <div class="roadmap-title">个性化体质跟踪+名医知识沉淀</div>
+          <div class="roadmap-desc">建立动态体质档案，季节性推送调理建议；沉淀名老中医经验方知识库；与西药场景打通实现中西医结合健康管理。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">体质档案</span><span class="roadmap-tag">名医经验</span><span class="roadmap-tag">中西结合</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">核心指标目标</div>
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-val" style="color:var(--amber)">≥80%</div><div class="metric-label">体质辨识<br>用户认可度</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--amber)">100%</div><div class="metric-label">配伍禁忌<br>检测覆盖率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--amber)">≥28%</div><div class="metric-label">中成药<br>推荐转化率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--amber)">≥20%</div><div class="metric-label">中医师<br>问诊转化率</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">风险与挑战</div>
+    <div class="risk-grid">
+      <div class="risk-card" style="border-color:var(--red)">
+        <div class="risk-card-title">⚠️ 辨证准确性风险</div>
+        <div class="risk-card-desc">中医辨证本身具有高度个体化和经验性，AI仅凭问卷无法替代望闻问切，存在辨证偏差。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>所有中成药推荐标注"AI辅助建议，以执业药师/中医师面诊为准"，复杂症状强制转人工。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--amber)">
+        <div class="risk-card-title">⚠️ 毒性中药安全风险</div>
+        <div class="risk-card-desc">部分中成药含附子、细辛、朱砂等毒性成分，长期或超量使用存在肝肾损伤风险。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>含毒性成分药品突出标注，设定推荐使用周期上限，超期使用强制提示复诊评估。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--blue)">
+        <div class="risk-card-title">⚠️ 知识库权威性争议</div>
+        <div class="risk-card-desc">中医理论流派众多，不同知识来源之间可能存在矛盾，影响推荐可信度。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>知识库以国家卫健委/中华中医药学会官方指南为主，标注知识来源，争议性内容标注"学术观点存在分歧"。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--green)">
+        <div class="risk-card-title">⚠️ 夸大保健功效风险</div>
+        <div class="risk-card-desc">药食同源产品和膏方等保健品推荐易出现夸大功效、虚假宣传问题。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>保健品推荐严格区分"保健食品"与"药品"，功效描述不超出产品批准范围，广告法合规审核。</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCENE 12: 疫苗接种管理
+═══════════════════════════════════════════ -->
+<div class="page" id="scene-vaccine">
+<div class="detail-page">
+  <div class="scene-nav">
+    <span class="scene-nav-label">快速跳转：</span>
+    <button class="scene-nav-btn" onclick="showScene('pharmacy')">💊 药品导购</button>
+    <button class="scene-nav-btn" onclick="showScene('chronic')">📋 慢病管理</button>
+    <button class="scene-nav-btn" onclick="showScene('device')">🩺 器械选购</button>
+    <button class="scene-nav-btn" onclick="showScene('prescription')">📦 处方配送</button>
+    <button class="scene-nav-btn" onclick="showScene('followup')">🏥 院外随访</button>
+    <button class="scene-nav-btn" onclick="showScene('personalized')">🧬 个性化推荐</button>
+    <button class="scene-nav-btn" onclick="showScene('insurance')">📑 保险理赔</button>
+    <button class="scene-nav-btn" onclick="showScene('nutrition')">🥗 营养管理</button>
+    <button class="scene-nav-btn" onclick="showScene('maternalinfant')">🤰 母婴健康</button>
+    <button class="scene-nav-btn" onclick="showScene('labreport')">🔬 检验解读</button>
+    <button class="scene-nav-btn" onclick="showScene('tcm')">🌿 中医药</button>
+    <button class="scene-nav-btn" onclick="showScene('vaccine')">💉 疫苗管理</button>
+    <button class="scene-nav-btn" onclick="showScene('authentication')">🛡️ 药品核验</button>
+    <button class="scene-nav-btn" onclick="showScene('sensoryhealth')">👁️ 口腔眼科</button>
+    <button class="scene-nav-btn" onclick="showScene('adversereaction')">🚨 不良反应</button>
+    <button class="scene-nav-btn" onclick="showScene('elderlyrehab')">🦽 老年辅具</button>
+  </div>
+  <div class="detail-hero">
+    <div class="detail-badge" style="background:var(--green-l);color:var(--green)">💉 场景12 · Vaccine Management</div>
+    <h1 class="detail-title">疫苗接种管理智能体</h1>
+    <p class="detail-sub">为儿童和成人提供个性化疫苗接种计划管理，覆盖免疫规划疫苗提醒、自费疫苗推荐、预约服务和接种记录管理，与母婴健康场景深度联动，提升用户到店频次。</p>
+  </div>
+  <div class="section">
+    <div class="section-label">产品设计方案</div>
+    <div class="product-stages">
+      <div class="stage-card">
+        <div class="stage-num">STAGE 01</div>
+        <div class="stage-title">接种计划建立</div>
+        <ul class="stage-list">
+          <li>儿童：录入出生日期，自动生成国家免疫规划接种时间表</li>
+          <li>成人：按年龄/职业/旅行目的地推荐自费疫苗（流感/HPV/带状疱疹等）</li>
+          <li>历史接种记录录入或从健康码/妇幼系统同步导入</li>
+          <li>家庭成员多人接种计划统一管理</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 02</div>
+        <div class="stage-title">智能提醒与预约</div>
+        <ul class="stage-list">
+          <li>接种到期前7天/3天/当天三级提醒</li>
+          <li>推荐附近有库存的接种门诊/药店，展示实时名额</li>
+          <li>在线预约，选时间段避免排队</li>
+          <li>接种后不良反应观察期提醒（30分钟留观）</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 03</div>
+        <div class="stage-title">接种后管理</div>
+        <ul class="stage-list">
+          <li>接种完成确认，自动更新下次接种提醒</li>
+          <li>常见接种反应（发热/红肿）处理指导</li>
+          <li>不良反应上报（联动场景15）</li>
+          <li>出境人员：目的地国家疫苗要求查询与攻略</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">核心功能拆解</div>
+    <div class="features-grid">
+      <div class="feature-card" style="background:var(--green-l);border-color:var(--green)">
+        <div class="feature-icon">📅</div>
+        <div class="feature-title">智能接种日历</div>
+        <ul class="feature-items">
+          <li>国家免疫规划14种疫苗全覆盖</li>
+          <li>儿童疫苗间隔规则自动计算</li>
+          <li>补种方案：漏种疫苗补种逻辑推演</li>
+          <li>疫苗组合冲突自动提示（同日禁忌）</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--blue-l);border-color:var(--blue)">
+        <div class="feature-icon">💉</div>
+        <div class="feature-title">自费疫苗推荐</div>
+        <ul class="feature-items">
+          <li>按年龄/性别/慢病史个性化推荐</li>
+          <li>HPV疫苗：价次/品牌/接种年龄详细对比</li>
+          <li>流感疫苗：季节性推送，高危人群优先提示</li>
+          <li>旅行疫苗：目的地疾病风险+推荐疫苗组合</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--teal-l);border-color:var(--teal)">
+        <div class="feature-icon">🗺️</div>
+        <div class="feature-title">接种门诊导航</div>
+        <ul class="feature-items">
+          <li>LBS定位推荐附近有库存的接种点</li>
+          <li>实时名额查询，避免白跑</li>
+          <li>在线预约+提前提醒</li>
+          <li>门诊评分与用户评价展示</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--amber-l);border-color:#b07020">
+        <div class="feature-icon">📋</div>
+        <div class="feature-title">接种档案管理</div>
+        <ul class="feature-items">
+          <li>电子接种证生成，可导出PDF</li>
+          <li>学校入学/出境所需接种证明一键生成</li>
+          <li>接种历史完整记录，医生可见授权</li>
+          <li>与母婴健康档案打通，子女多端共享</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">落地路径</div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--green)">1</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 1 · 1-2个月</div>
+          <div class="roadmap-title">儿童免疫规划提醒</div>
+          <div class="roadmap-desc">上线儿童国家免疫规划接种日历与多级提醒，录入接种记录，与母婴健康场景打通，验证用户使用率。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">接种日历</span><span class="roadmap-tag">到期提醒</span><span class="roadmap-tag">记录管理</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--green)">2</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 2 · 2-5个月</div>
+          <div class="roadmap-title">成人疫苗+预约系统</div>
+          <div class="roadmap-desc">扩展成人HPV/流感/带状疱疹等自费疫苗推荐，接入接种门诊库存查询和在线预约系统，商业模式验证。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">自费疫苗</span><span class="roadmap-tag">在线预约</span><span class="roadmap-tag">库存查询</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--green)">3</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 3 · 5-8个月</div>
+          <div class="roadmap-title">旅行疫苗+家庭档案</div>
+          <div class="roadmap-desc">上线出境旅行疫苗查询，家庭多成员统一接种档案，电子接种证明，与不良反应监测场景联动。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">旅行疫苗</span><span class="roadmap-tag">家庭档案</span><span class="roadmap-tag">电子证明</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">核心指标目标</div>
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-val" style="color:var(--green)">≥90%</div><div class="metric-label">免疫规划<br>提醒覆盖率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--green)">≥55%</div><div class="metric-label">提醒→预约<br>转化率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--green)">≥40%</div><div class="metric-label">自费疫苗<br>推荐接受率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--green)">≥70%</div><div class="metric-label">家庭成员<br>档案完整率</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">风险与挑战</div>
+    <div class="risk-grid">
+      <div class="risk-card" style="border-color:var(--red)">
+        <div class="risk-card-title">⚠️ 接种信息错误风险</div>
+        <div class="risk-card-desc">接种间隔规则错误或漏提醒可能导致儿童接种计划混乱，影响免疫效果。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>接种规则严格参照国家免疫规划官方指南，规则变更时24小时内同步更新，疾控专家定期审核。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--amber)">
+        <div class="risk-card-title">⚠️ 库存实时性挑战</div>
+        <div class="risk-card-desc">疫苗库存查询若不够实时准确，用户到店后发现无货，严重损害体验和信任。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>与接种门诊系统API直连，缓存时间不超过15分钟，无法实时同步时显示"建议电话确认"。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--blue)">
+        <div class="risk-card-title">⚠️ 疫苗犹豫问题</div>
+        <div class="risk-card-desc">部分用户对疫苗安全性持怀疑态度，推荐信息处理不当可能引发对立情绪。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>推荐内容基于权威机构数据，客观呈现不良反应概率，尊重用户选择权，不过度强迫推送。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--green)">
+        <div class="risk-card-title">⚠️ 自费疫苗商业化边界</div>
+        <div class="risk-card-desc">自费疫苗推荐涉及商业利益，若过度推荐引发公众质疑"过度医疗"。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>推荐严格遵循官方适应症和人群建议，标注免费/自费属性，提供"暂不接种"选项且不反复打扰。</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCENE 13: 药品真伪核验
+═══════════════════════════════════════════ -->
+<div class="page" id="scene-authentication">
+<div class="detail-page">
+  <div class="scene-nav">
+    <span class="scene-nav-label">快速跳转：</span>
+    <button class="scene-nav-btn" onclick="showScene('pharmacy')">💊 药品导购</button>
+    <button class="scene-nav-btn" onclick="showScene('chronic')">📋 慢病管理</button>
+    <button class="scene-nav-btn" onclick="showScene('device')">🩺 器械选购</button>
+    <button class="scene-nav-btn" onclick="showScene('prescription')">📦 处方配送</button>
+    <button class="scene-nav-btn" onclick="showScene('followup')">🏥 院外随访</button>
+    <button class="scene-nav-btn" onclick="showScene('personalized')">🧬 个性化推荐</button>
+    <button class="scene-nav-btn" onclick="showScene('insurance')">📑 保险理赔</button>
+    <button class="scene-nav-btn" onclick="showScene('nutrition')">🥗 营养管理</button>
+    <button class="scene-nav-btn" onclick="showScene('maternalinfant')">🤰 母婴健康</button>
+    <button class="scene-nav-btn" onclick="showScene('labreport')">🔬 检验解读</button>
+    <button class="scene-nav-btn" onclick="showScene('tcm')">🌿 中医药</button>
+    <button class="scene-nav-btn" onclick="showScene('vaccine')">💉 疫苗管理</button>
+    <button class="scene-nav-btn" onclick="showScene('authentication')">🛡️ 药品核验</button>
+    <button class="scene-nav-btn" onclick="showScene('sensoryhealth')">👁️ 口腔眼科</button>
+    <button class="scene-nav-btn" onclick="showScene('adversereaction')">🚨 不良反应</button>
+    <button class="scene-nav-btn" onclick="showScene('elderlyrehab')">🦽 老年辅具</button>
+  </div>
+  <div class="detail-hero">
+    <div class="detail-badge" style="background:var(--coral-l);color:var(--coral)">🛡️ 场景13 · Drug Authentication</div>
+    <h1 class="detail-title">药品真伪核验智能体</h1>
+    <p class="detail-sub">通过扫码或拍照，帮助消费者快速核验药品批号、追溯生产流通全链路、查询召回信息和有效期，构建消费者端药品安全的最后一道防线，同时强化平台信任背书。</p>
+  </div>
+  <div class="section">
+    <div class="section-label">产品设计方案</div>
+    <div class="product-stages">
+      <div class="stage-card">
+        <div class="stage-num">STAGE 01</div>
+        <div class="stage-title">药品识别与信息查询</div>
+        <ul class="stage-list">
+          <li>扫描药品外包装条码（EAN-13/二维码/追溯码）</li>
+          <li>拍照识别：AI图像识别补充条码残损情况</li>
+          <li>展示药品基本信息：通用名/批准文号/生产企业/批号</li>
+          <li>有效期自动解析，过期/临期药品高亮预警</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 02</div>
+        <div class="stage-title">溯源与合规核验</div>
+        <ul class="stage-list">
+          <li>对接NMPA国家药监局药品追溯系统</li>
+          <li>追溯流通链路：生产→配送→零售全节点查询</li>
+          <li>冷链药品温控记录查询（如胰岛素、疫苗）</li>
+          <li>查询药品是否在召回/暂停使用名单中</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 03</div>
+        <div class="stage-title">可疑药品上报与处置</div>
+        <ul class="stage-list">
+          <li>核验异常时（批号不存在/溯源断链）提示用户停止使用</li>
+          <li>一键上报可疑假药至药监局投诉平台</li>
+          <li>对接平台售后，异常药品退款/换货快速通道</li>
+          <li>风险药品信息推送至购买相同批次的其他用户</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">核心功能拆解</div>
+    <div class="features-grid">
+      <div class="feature-card" style="background:var(--coral-l);border-color:var(--coral)">
+        <div class="feature-icon">📷</div>
+        <div class="feature-title">多模态药品识别</div>
+        <ul class="feature-items">
+          <li>EAN-13/DataMatrix/二维码全格式扫描</li>
+          <li>AI图像识别：药盒正面信息自动提取</li>
+          <li>模糊/残损条码超分辨率处理</li>
+          <li>离线模式：核心数据本地缓存，无网可用</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--blue-l);border-color:var(--blue)">
+        <div class="feature-icon">🔗</div>
+        <div class="feature-title">溯源链路查询</div>
+        <ul class="feature-items">
+          <li>NMPA追溯系统API直连</li>
+          <li>生产/配送/零售全链路时间戳展示</li>
+          <li>冷链温控记录可视化</li>
+          <li>进口药品通关记录查询</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--amber-l);border-color:#b07020">
+        <div class="feature-icon">⚠️</div>
+        <div class="feature-title">召回预警系统</div>
+        <ul class="feature-items">
+          <li>NMPA召回公告实时同步（每日更新）</li>
+          <li>用户已购批次与召回批次自动匹配</li>
+          <li>主动推送召回通知至相关用户</li>
+          <li>退货退款流程自动触发</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--green-l);border-color:var(--green)">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">有效期智能管理</div>
+        <ul class="feature-items">
+          <li>扫码记录药品有效期，到期前30天提醒</li>
+          <li>家庭药箱管理：多药品有效期统一追踪</li>
+          <li>临期药品处置建议（使用/退换/废弃）</li>
+          <li>废弃药品回收点查询（环保合规处置）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">落地路径</div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--coral)">1</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 1 · 1-2个月</div>
+          <div class="roadmap-title">基础扫码核验</div>
+          <div class="roadmap-desc">接入NMPA药品追溯系统API，上线条码扫描核验与基本药品信息展示，召回公告实时同步，主要覆盖平台已售药品。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">扫码核验</span><span class="roadmap-tag">NMPA接入</span><span class="roadmap-tag">召回同步</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--coral)">2</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 2 · 2-5个月</div>
+          <div class="roadmap-title">图像识别+家庭药箱</div>
+          <div class="roadmap-desc">上线AI图像识别补充扫码，有效期管理与家庭药箱功能，冷链温控记录展示，异常药品一键上报通道。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">图像识别</span><span class="roadmap-tag">有效期管理</span><span class="roadmap-tag">冷链查询</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--coral)">3</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 3 · 5-8个月</div>
+          <div class="roadmap-title">主动召回推送+废弃回收</div>
+          <div class="roadmap-desc">建立主动召回通知推送机制，打通退货退款流程；接入废弃药品回收点地图；对外开放API供第三方药店接入。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">主动推送</span><span class="roadmap-tag">退货通道</span><span class="roadmap-tag">废弃回收</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">核心指标目标</div>
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-val" style="color:var(--coral)">＜2s</div><div class="metric-label">扫码核验<br>响应时间</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--coral)">100%</div><div class="metric-label">召回批次<br>用户通知率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--coral)">≥99%</div><div class="metric-label">NMPA数据<br>实时同步率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--coral)">≥60%</div><div class="metric-label">核验用户<br>复购信任提升</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">风险与挑战</div>
+    <div class="risk-grid">
+      <div class="risk-card" style="border-color:var(--red)">
+        <div class="risk-card-title">⚠️ 数据覆盖不完整</div>
+        <div class="risk-card-desc">并非所有药品已接入国家追溯系统，中小企业数据上报不规范，导致部分正品无法查询到记录。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>无法查询结果时明确显示"系统暂未收录，不代表假药"，引导用户通过官方渠道进一步核验。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--amber)">
+        <div class="risk-card-title">⚠️ 造假手段升级</div>
+        <div class="risk-card-desc">高端假药制造者可能复制真实批号和二维码，核验系统无法识别"真码假药"。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>叠加多维度验证（包装印刷质量AI分析、药片外观比对），单一扫码结果仅作参考，不保证绝对真实。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--blue)">
+        <div class="risk-card-title">⚠️ API稳定性依赖</div>
+        <div class="risk-card-desc">过度依赖NMPA单一数据源，接口故障时用户无法查询，影响功能可用性。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>建立本地缓存数据库（T-1日全量备份），API故障时降级提供缓存数据并明确标注数据时效。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--green)">
+        <div class="risk-card-title">⚠️ 误报引发恐慌</div>
+        <div class="risk-card-desc">核验结果异常时用户可能恐慌并产生纠纷，如果误判将对合法药企造成严重损害。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>异常结果仅显示"建议进一步核实"，不使用"假药"字样，提供官方电话和举报渠道，人工客服快速响应。</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCENE 14: 口腔与眼科健康
+═══════════════════════════════════════════ -->
+<div class="page" id="scene-sensoryhealth">
+<div class="detail-page">
+  <div class="scene-nav">
+    <span class="scene-nav-label">快速跳转：</span>
+    <button class="scene-nav-btn" onclick="showScene('pharmacy')">💊 药品导购</button>
+    <button class="scene-nav-btn" onclick="showScene('chronic')">📋 慢病管理</button>
+    <button class="scene-nav-btn" onclick="showScene('device')">🩺 器械选购</button>
+    <button class="scene-nav-btn" onclick="showScene('prescription')">📦 处方配送</button>
+    <button class="scene-nav-btn" onclick="showScene('followup')">🏥 院外随访</button>
+    <button class="scene-nav-btn" onclick="showScene('personalized')">🧬 个性化推荐</button>
+    <button class="scene-nav-btn" onclick="showScene('insurance')">📑 保险理赔</button>
+    <button class="scene-nav-btn" onclick="showScene('nutrition')">🥗 营养管理</button>
+    <button class="scene-nav-btn" onclick="showScene('maternalinfant')">🤰 母婴健康</button>
+    <button class="scene-nav-btn" onclick="showScene('labreport')">🔬 检验解读</button>
+    <button class="scene-nav-btn" onclick="showScene('tcm')">🌿 中医药</button>
+    <button class="scene-nav-btn" onclick="showScene('vaccine')">💉 疫苗管理</button>
+    <button class="scene-nav-btn" onclick="showScene('authentication')">🛡️ 药品核验</button>
+    <button class="scene-nav-btn" onclick="showScene('sensoryhealth')">👁️ 口腔眼科</button>
+    <button class="scene-nav-btn" onclick="showScene('adversereaction')">🚨 不良反应</button>
+    <button class="scene-nav-btn" onclick="showScene('elderlyrehab')">🦽 老年辅具</button>
+  </div>
+  <div class="detail-hero">
+    <div class="detail-badge" style="background:var(--teal-l);color:var(--teal)">👁️ 场景14 · Oral &amp; Eye Health</div>
+    <h1 class="detail-title">口腔与眼科健康智能体</h1>
+    <p class="detail-sub">覆盖口腔护理产品精准选购（电动牙刷、漱口水、正畸耗材）和视力健康管理（隐形眼镜选配、护眼产品、近视防控），是医疗零售中客单价高、复购强的品类。</p>
+  </div>
+  <div class="section">
+    <div class="section-label">产品设计方案</div>
+    <div class="product-stages">
+      <div class="stage-card">
+        <div class="stage-num">STAGE 01</div>
+        <div class="stage-title">口腔健康评估与选购</div>
+        <ul class="stage-list">
+          <li>口腔问题问诊：龋齿/牙周炎/口腔溃疡/口臭等主诉</li>
+          <li>电动牙刷选型：震动模式、牙龈敏感程度、正畸适配</li>
+          <li>漱口水/牙膏成分解析：氟化物含量、美白成分安全性</li>
+          <li>正畸耗材（隐适美附件/托槽蜡）专项购买引导</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 02</div>
+        <div class="stage-title">视力健康管理</div>
+        <ul class="stage-list">
+          <li>隐形眼镜选配：度数/散光/含水量/更换周期智能匹配</li>
+          <li>护眼产品推荐：叶黄素/蓝莓素/滴眼液按用眼习惯推荐</li>
+          <li>儿童近视防控：户外时间/低浓度阿托品/OK镜使用指导</li>
+          <li>眼部不适症状评估：干眼/红眼/视疲劳分级处理建议</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 03</div>
+        <div class="stage-title">健康维护与定期提醒</div>
+        <ul class="stage-list">
+          <li>口腔洁牙/复查提醒（每6个月一次）</li>
+          <li>隐形眼镜护理液/镜盒更换周期提醒</li>
+          <li>儿童视力档案：每学期屈光度追踪记录</li>
+          <li>严重症状（剧烈牙痛/急性眼压升高）强制引导就医</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">核心功能拆解</div>
+    <div class="features-grid">
+      <div class="feature-card" style="background:var(--teal-l);border-color:var(--teal)">
+        <div class="feature-icon">🦷</div>
+        <div class="feature-title">口腔产品选购引擎</div>
+        <ul class="feature-items">
+          <li>牙刷型号×牙龈状态精准匹配矩阵</li>
+          <li>成分安全数据库（EWG等级标注）</li>
+          <li>正畸用户专属产品线推荐</li>
+          <li>口腔科医生背书内容库</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--blue-l);border-color:var(--blue)">
+        <div class="feature-icon">👁️</div>
+        <div class="feature-title">视力管理助手</div>
+        <ul class="feature-items">
+          <li>隐形眼镜参数智能解读（BC值/DIA/含水量）</li>
+          <li>度数/散光轴向自动计算验配建议</li>
+          <li>儿童近视度数增长趋势预警</li>
+          <li>OK镜使用期间并发症风险监测</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--green-l);border-color:var(--green)">
+        <div class="feature-icon">🔔</div>
+        <div class="feature-title">周期性提醒系统</div>
+        <ul class="feature-items">
+          <li>洗牙/口腔检查6个月周期提醒</li>
+          <li>隐形眼镜更换日期精准提醒</li>
+          <li>护理液/滴眼液补货提前提醒</li>
+          <li>儿童视力检查学期提醒</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--amber-l);border-color:#b07020">
+        <div class="feature-icon">📋</div>
+        <div class="feature-title">健康档案建立</div>
+        <ul class="feature-items">
+          <li>口腔治疗记录（补牙/拔牙/正畸历史）</li>
+          <li>视力屈光档案（历次配镜度数追踪）</li>
+          <li>儿童视力发育档案，家长/学校可授权查阅</li>
+          <li>就诊时一键生成口腔/眼科摘要</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">落地路径</div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--teal)">1</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 1 · 1-3个月</div>
+          <div class="roadmap-title">口腔/眼科产品选购助手</div>
+          <div class="roadmap-desc">上线电动牙刷选型助手和隐形眼镜选配助手，建立成分安全数据库，验证高客单价场景转化率。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">选购助手</span><span class="roadmap-tag">成分解析</span><span class="roadmap-tag">验配引导</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--teal)">2</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 2 · 3-6个月</div>
+          <div class="roadmap-title">周期提醒+儿童近视防控</div>
+          <div class="roadmap-desc">上线洁牙/复查/更换周期提醒，儿童视力档案追踪，近视防控产品（低浓度阿托品/OK镜）专项指导模块。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">周期提醒</span><span class="roadmap-tag">视力档案</span><span class="roadmap-tag">近视防控</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--teal)">3</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 3 · 6-10个月</div>
+          <div class="roadmap-title">医生联动+家庭档案</div>
+          <div class="roadmap-desc">与口腔科/眼科门诊预约系统打通，家庭成员档案共享，医生端可查阅患者历史记录，构建院内院外一体化管理。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">门诊预约</span><span class="roadmap-tag">家庭档案</span><span class="roadmap-tag">医患联动</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">核心指标目标</div>
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-val" style="color:var(--teal)">≥45%</div><div class="metric-label">问询→高客单<br>产品转化率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--teal)">≥65%</div><div class="metric-label">提醒触达后<br>复购率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--teal)">≥80%</div><div class="metric-label">隐形眼镜<br>验配满意度</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--teal)">100%</div><div class="metric-label">急症/严重症状<br>就医导流率</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">风险与挑战</div>
+    <div class="risk-grid">
+      <div class="risk-card" style="border-color:var(--red)">
+        <div class="risk-card-title">⚠️ 隐形眼镜验配专业性</div>
+        <div class="risk-card-desc">隐形眼镜属于三类医疗器械，AI验配建议若有偏差可能导致角膜损伤等严重并发症。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>AI仅提供参数解读辅助，明确说明必须凭验配处方购买，不接受无处方直接配镜，建议每年线下复查。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--amber)">
+        <div class="risk-card-title">⚠️ 儿童OK镜安全风险</div>
+        <div class="risk-card-desc">角膜塑形镜使用不当（护理/佩戴时间）可能引发角膜感染，后果严重。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>OK镜相关内容全程标注高风险提示，强调每3个月必须线下复查，异常症状（红眼/疼痛）立即停戴就医。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--blue)">
+        <div class="risk-card-title">⚠️ 口腔美白产品夸大宣传</div>
+        <div class="risk-card-desc">市场上口腔美白产品良莠不齐，推荐含高浓度双氧水成分的产品可能损伤牙釉质。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>成分库标注安全浓度范围，超标产品不推荐；推荐内容经口腔科医生审核，符合国家化妆品法规。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--green)">
+        <div class="risk-card-title">⚠️ 跨品类专业深度挑战</div>
+        <div class="risk-card-desc">口腔和眼科是两个独立的专科领域，同时覆盖知识库建设和专业审核成本较高。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>优先从产品选购切入（低专业门槛），健康管理功能分阶段上线，分别招募口腔科和眼科专业顾问审核。</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCENE 15: 不良反应监测
+═══════════════════════════════════════════ -->
+<div class="page" id="scene-adversereaction">
+<div class="detail-page">
+  <div class="scene-nav">
+    <span class="scene-nav-label">快速跳转：</span>
+    <button class="scene-nav-btn" onclick="showScene('pharmacy')">💊 药品导购</button>
+    <button class="scene-nav-btn" onclick="showScene('chronic')">📋 慢病管理</button>
+    <button class="scene-nav-btn" onclick="showScene('device')">🩺 器械选购</button>
+    <button class="scene-nav-btn" onclick="showScene('prescription')">📦 处方配送</button>
+    <button class="scene-nav-btn" onclick="showScene('followup')">🏥 院外随访</button>
+    <button class="scene-nav-btn" onclick="showScene('personalized')">🧬 个性化推荐</button>
+    <button class="scene-nav-btn" onclick="showScene('insurance')">📑 保险理赔</button>
+    <button class="scene-nav-btn" onclick="showScene('nutrition')">🥗 营养管理</button>
+    <button class="scene-nav-btn" onclick="showScene('maternalinfant')">🤰 母婴健康</button>
+    <button class="scene-nav-btn" onclick="showScene('labreport')">🔬 检验解读</button>
+    <button class="scene-nav-btn" onclick="showScene('tcm')">🌿 中医药</button>
+    <button class="scene-nav-btn" onclick="showScene('vaccine')">💉 疫苗管理</button>
+    <button class="scene-nav-btn" onclick="showScene('authentication')">🛡️ 药品核验</button>
+    <button class="scene-nav-btn" onclick="showScene('sensoryhealth')">👁️ 口腔眼科</button>
+    <button class="scene-nav-btn" onclick="showScene('adversereaction')">🚨 不良反应</button>
+    <button class="scene-nav-btn" onclick="showScene('elderlyrehab')">🦽 老年辅具</button>
+  </div>
+  <div class="detail-hero">
+    <div class="detail-badge" style="background:var(--purple-l);color:var(--purple)">🚨 场景15 · ADR Monitoring</div>
+    <h1 class="detail-title">不良反应监测智能体</h1>
+    <p class="detail-sub">用户用药后出现异常症状时，智能体引导结构化上报、评估不良反应严重程度、协助关联可疑药品，并给出停药/就医/观察等分级处置建议，同时向药监部门履行上报义务。</p>
+  </div>
+  <div class="section">
+    <div class="section-label">产品设计方案</div>
+    <div class="product-stages">
+      <div class="stage-card">
+        <div class="stage-num">STAGE 01</div>
+        <div class="stage-title">症状采集与可疑药品关联</div>
+        <ul class="stage-list">
+          <li>多轮对话引导：症状类型、出现时间、用药时间轴</li>
+          <li>从用药档案/购药记录自动关联可疑药品</li>
+          <li>WHO-UMC因果关系评估量表引导（确定/很可能/可能）</li>
+          <li>同期合并用药信息采集（排除联合用药干扰）</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 02</div>
+        <div class="stage-title">严重程度评估与分级处置</div>
+        <ul class="stage-list">
+          <li>轻度ADR（皮疹/轻度恶心）：观察处理建议，可继续用药</li>
+          <li>中度ADR（肝功能异常/严重皮疹）：建议停药+48小时内就诊</li>
+          <li>严重ADR（过敏性休克/急性肝损伤）：立即停药+呼叫120</li>
+          <li>严重症状触发实时推送给家属和主治医生（授权后）</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 03</div>
+        <div class="stage-title">监管上报与闭环追踪</div>
+        <ul class="stage-list">
+          <li>协助填报国家药品不良反应监测系统（ADR报告表）</li>
+          <li>药企自愿上报通道：聚合消费者上报数据脱敏后推送</li>
+          <li>上报状态追踪，结果反馈给用户</li>
+          <li>个人ADR历史记录，下次问诊时主动提示医生</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">核心功能拆解</div>
+    <div class="features-grid">
+      <div class="feature-card" style="background:var(--purple-l);border-color:var(--purple)">
+        <div class="feature-icon">🔍</div>
+        <div class="feature-title">因果关联分析引擎</div>
+        <ul class="feature-items">
+          <li>Naranjo/WHO-UMC量表数字化实现</li>
+          <li>时间轴分析：用药→症状出现间隔自动计算</li>
+          <li>已知ADR谱匹配（说明书不良反应知识库）</li>
+          <li>去激发/再激发信息采集（停药后症状是否缓解）</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--red-l);border-color:var(--red)">
+        <div class="feature-icon">🚨</div>
+        <div class="feature-title">严重程度分级系统</div>
+        <ul class="feature-items">
+          <li>参照CTCAE标准的严重程度4级分类</li>
+          <li>严重ADR实时推送（家属/医生/急救）</li>
+          <li>过敏性休克识别，自动触发120引导</li>
+          <li>儿童/老年/孕妇特殊人群风险加权</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--blue-l);border-color:var(--blue)">
+        <div class="feature-icon">📤</div>
+        <div class="feature-title">监管上报系统</div>
+        <ul class="feature-items">
+          <li>国家ADR监测系统表格自动填充</li>
+          <li>企业ADR上报API对接（主动药物警戒）</li>
+          <li>群体性ADR事件早期信号检测</li>
+          <li>上报数据脱敏与隐私保护</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--green-l);border-color:var(--green)">
+        <div class="feature-icon">📁</div>
+        <div class="feature-title">ADR个人档案</div>
+        <ul class="feature-items">
+          <li>历次ADR记录永久存档</li>
+          <li>过敏药物黑名单，全平台拦截该药推荐</li>
+          <li>就诊时ADR历史摘要一键生成</li>
+          <li>与场景01/02联动，导购时主动规避ADR风险药</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">落地路径</div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--purple)">1</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 1 · 1-2个月</div>
+          <div class="roadmap-title">症状上报+严重程度分级</div>
+          <div class="roadmap-desc">上线ADR症状采集对话流，建立严重程度分级规则，严重ADR强制就医导流，建立过敏药物黑名单，与药品导购场景打通拦截逻辑。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">症状采集</span><span class="roadmap-tag">严重分级</span><span class="roadmap-tag">黑名单</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--purple)">2</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 2 · 2-5个月</div>
+          <div class="roadmap-title">因果分析+监管上报</div>
+          <div class="roadmap-desc">接入ADR因果关系评估量表，开发国家ADR监测系统报告自动填充，企业ADR上报API对接，完成监管合规建设。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">因果分析</span><span class="roadmap-tag">监管上报</span><span class="roadmap-tag">合规建设</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--purple)">3</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 3 · 5-9个月</div>
+          <div class="roadmap-title">信号检测+全场景联动</div>
+          <div class="roadmap-desc">基于聚合数据建立群体性ADR早期信号检测，与慢病管理/药品导购/疫苗接种全场景联动，构建平台级药物安全防护网。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">信号检测</span><span class="roadmap-tag">全场景联动</span><span class="roadmap-tag">安全防护</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">核心指标目标</div>
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-val" style="color:var(--purple)">100%</div><div class="metric-label">严重ADR<br>就医导流率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--purple)">≥85%</div><div class="metric-label">ADR上报<br>表单完整率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--purple)">＜4h</div><div class="metric-label">严重ADR<br>人工响应时间</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--purple)">≥90%</div><div class="metric-label">过敏黑名单<br>导购拦截率</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">风险与挑战</div>
+    <div class="risk-grid">
+      <div class="risk-card" style="border-color:var(--red)">
+        <div class="risk-card-title">⚠️ 严重ADR漏判风险</div>
+        <div class="risk-card-desc">AI对严重ADR的判断若出现假阴性，用户未及时就医可能造成生命危险。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>严重程度判断采用宁可误报不可漏报原则，置信度不足时升级为"建议就医"，严重ADR人工药师30分钟内响应。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--amber)">
+        <div class="risk-card-title">⚠️ 上报数据质量挑战</div>
+        <div class="risk-card-desc">消费者填报的ADR信息可能不准确或不完整，影响监管数据质量和信号检测有效性。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>对话式引导替代表单填写，关键字段必填校验，上报数据经药师复核后再提交监管系统。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--blue)">
+        <div class="risk-card-title">⚠️ 法律责任界定</div>
+        <div class="risk-card-desc">平台汇聚ADR信息后若未及时处理导致扩大损失，可能承担法律连带责任。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>明确平台仅提供信息收集和传递服务，建立SLA承诺的响应时效，保留完整处理记录备查。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--green)">
+        <div class="risk-card-title">⚠️ 用户上报积极性低</div>
+        <div class="risk-card-desc">消费者普遍缺乏ADR上报意识，功能入口触达率低，难以积累足够数据。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>在购药后3-7天主动推送"用药反馈"轻量问卷，积分激励上报行为，将ADR收集融入日常健康管理流程。</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCENE 16: 老年康复辅具选购
+═══════════════════════════════════════════ -->
+<div class="page" id="scene-elderlyrehab">
+<div class="detail-page">
+  <div class="scene-nav">
+    <span class="scene-nav-label">快速跳转：</span>
+    <button class="scene-nav-btn" onclick="showScene('pharmacy')">💊 药品导购</button>
+    <button class="scene-nav-btn" onclick="showScene('chronic')">📋 慢病管理</button>
+    <button class="scene-nav-btn" onclick="showScene('device')">🩺 器械选购</button>
+    <button class="scene-nav-btn" onclick="showScene('prescription')">📦 处方配送</button>
+    <button class="scene-nav-btn" onclick="showScene('followup')">🏥 院外随访</button>
+    <button class="scene-nav-btn" onclick="showScene('personalized')">🧬 个性化推荐</button>
+    <button class="scene-nav-btn" onclick="showScene('insurance')">📑 保险理赔</button>
+    <button class="scene-nav-btn" onclick="showScene('nutrition')">🥗 营养管理</button>
+    <button class="scene-nav-btn" onclick="showScene('maternalinfant')">🤰 母婴健康</button>
+    <button class="scene-nav-btn" onclick="showScene('labreport')">🔬 检验解读</button>
+    <button class="scene-nav-btn" onclick="showScene('tcm')">🌿 中医药</button>
+    <button class="scene-nav-btn" onclick="showScene('vaccine')">💉 疫苗管理</button>
+    <button class="scene-nav-btn" onclick="showScene('authentication')">🛡️ 药品核验</button>
+    <button class="scene-nav-btn" onclick="showScene('sensoryhealth')">👁️ 口腔眼科</button>
+    <button class="scene-nav-btn" onclick="showScene('adversereaction')">🚨 不良反应</button>
+    <button class="scene-nav-btn" onclick="showScene('elderlyrehab')">🦽 老年辅具</button>
+  </div>
+  <div class="detail-hero">
+    <div class="detail-badge" style="background:var(--amber-l);color:var(--amber)">🦽 场景16 · Elderly Rehab Aids</div>
+    <h1 class="detail-title">老年康复辅具选购智能体</h1>
+    <p class="detail-sub">针对老年人及康复患者的轮椅、助行器、防跌落设备、护理床等适老化辅助器具，提供基于身体功能评估的精准选型建议、使用培训和售后保障，客单价高、家属决策场景突出。</p>
+  </div>
+  <div class="section">
+    <div class="section-label">产品设计方案</div>
+    <div class="product-stages">
+      <div class="stage-card">
+        <div class="stage-num">STAGE 01</div>
+        <div class="stage-title">功能评估与需求诊断</div>
+        <ul class="stage-list">
+          <li>行动能力评估：步行距离、上下楼梯能力、平衡功能</li>
+          <li>疾病史采集：骨折/中风/帕金森/截肢等影响辅具选型的关键因素</li>
+          <li>使用场景分析：居家/户外/医院/旅行不同场景需求</li>
+          <li>家庭环境询问：门宽/卫生间扶手/地板材质（防跌评估）</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 02</div>
+        <div class="stage-title">精准选型与产品推荐</div>
+        <ul class="stage-list">
+          <li>轮椅：手动/电动/轻折叠/运动轮椅按功能评估结果推荐</li>
+          <li>助行器：四脚助行架/助行车/腋下拐/肘拐按稳定性需求匹配</li>
+          <li>防跌设备：床边护栏/浴室扶手/防滑垫/跌倒报警器组合推荐</li>
+          <li>护理床：电动档位/承重要求/尺寸适配卧室空间</li>
+        </ul>
+      </div>
+      <div class="stage-card">
+        <div class="stage-num">STAGE 03</div>
+        <div class="stage-title">使用培训与售后保障</div>
+        <ul class="stage-list">
+          <li>图文/视频使用指导：安全使用姿势、调节方法</li>
+          <li>照护者操作培训（如何协助轮椅转运）</li>
+          <li>定期使用状态回访（有无不适/是否需要调整）</li>
+          <li>联动场景05（院外随访）追踪康复进展</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">核心功能拆解</div>
+    <div class="features-grid">
+      <div class="feature-card" style="background:var(--amber-l);border-color:#b07020">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">功能评估量表</div>
+        <ul class="feature-items">
+          <li>Barthel指数日常生活能力评估数字化</li>
+          <li>Berg平衡量表简化版，跌倒风险量化评分</li>
+          <li>MMSE认知功能筛查（辅具复杂度匹配）</li>
+          <li>评估结果生成辅具需求清单</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--blue-l);border-color:var(--blue)">
+        <div class="feature-icon">🦽</div>
+        <div class="feature-title">辅具参数匹配引擎</div>
+        <ul class="feature-items">
+          <li>体重/身高/座宽等体型参数精确适配</li>
+          <li>医保辅具目录核验（长护险报销查询）</li>
+          <li>租赁vs购买成本效益分析推荐</li>
+          <li>三甲医院康复科医生选型建议数据库</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--green-l);border-color:var(--green)">
+        <div class="feature-icon">🏠</div>
+        <div class="feature-title">居家环境改造建议</div>
+        <ul class="feature-items">
+          <li>家庭跌倒风险评估（卫生间/卧室/楼梯）</li>
+          <li>扶手安装位置/门宽适配建议</li>
+          <li>无障碍改造优先级排序</li>
+          <li>推荐合作改造服务商（上门安装）</li>
+        </ul>
+      </div>
+      <div class="feature-card" style="background:var(--pink-l);border-color:var(--pink)">
+        <div class="feature-icon">👨‍👩‍👧</div>
+        <div class="feature-title">家属决策支持</div>
+        <ul class="feature-items">
+          <li>家属端视角：照护难度/维护成本对比</li>
+          <li>多产品方案并列展示，辅助家庭会议决策</li>
+          <li>长期护理险/商业险辅具报销查询</li>
+          <li>专业康复治疗师在线咨询转介</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">落地路径</div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--amber)">1</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 1 · 1-3个月</div>
+          <div class="roadmap-title">功能评估+主要辅具选型</div>
+          <div class="roadmap-desc">上线简化版功能评估问卷，覆盖轮椅/助行器/防跌设备三类核心辅具选型，图文使用指导，验证高客单场景转化。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">功能评估</span><span class="roadmap-tag">选型推荐</span><span class="roadmap-tag">使用指导</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--amber)">2</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 2 · 3-6个月</div>
+          <div class="roadmap-title">长护险查询+居家改造</div>
+          <div class="roadmap-desc">接入长期护理险辅具报销查询，上线居家跌倒风险评估和改造建议，对接上门安装服务商，拓展服务收入来源。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">长护险</span><span class="roadmap-tag">居家改造</span><span class="roadmap-tag">上门服务</span></div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-left"><div class="roadmap-dot" style="background:var(--amber)">3</div><div class="roadmap-line"></div></div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase">Phase 3 · 6-10个月</div>
+          <div class="roadmap-title">康复追踪+康复师联动</div>
+          <div class="roadmap-desc">与院外随访场景打通追踪康复进展，接入专业康复治疗师在线咨询，辅具租赁平台整合，建立养老健康闭环。</div>
+          <div class="roadmap-tags"><span class="roadmap-tag">康复追踪</span><span class="roadmap-tag">康复师联动</span><span class="roadmap-tag">租赁整合</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">核心指标目标</div>
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-val" style="color:var(--amber)">≥50%</div><div class="metric-label">评估后辅具<br>购买转化率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--amber)">≥90%</div><div class="metric-label">选型推荐<br>家属满意度</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--amber)">≥70%</div><div class="metric-label">长护险报销<br>查询使用率</div></div>
+      <div class="metric-card"><div class="metric-val" style="color:var(--amber)">≥3000</div><div class="metric-label">平均辅具<br>订单客单价(元)</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">风险与挑战</div>
+    <div class="risk-grid">
+      <div class="risk-card" style="border-color:var(--red)">
+        <div class="risk-card-title">⚠️ 选型错误安全风险</div>
+        <div class="risk-card-desc">辅具选型不当（如轮椅过宽/助行器高度不合适）可能加重跌倒风险，对老年人造成严重伤害。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>关键参数（座宽/扶手高度）明确提示用户测量，提供专业康复治疗师线上复核选型，高风险产品建议上门试用。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--amber)">
+        <div class="risk-card-title">⚠️ 家属代购决策偏差</div>
+        <div class="risk-card-desc">辅具往往由子女代为购买，缺乏老人本人参与，导致实际使用体验与选型不符。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>设计"家属+老人协同评估"双人模式，关键功能测试提示老人本人参与，7天无理由退换货保障降低决策风险。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--blue)">
+        <div class="risk-card-title">⚠️ 老年用户数字鸿沟</div>
+        <div class="risk-card-desc">老年人本人使用智能体存在较大障碍，过度依赖家属代操作可能导致关键信息传递失真。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>设计大字体/语音交互/极简操作的老年友好模式，同时强化家属端功能，鼓励线下门店专员辅助评估。</div>
+      </div>
+      <div class="risk-card" style="border-color:var(--green)">
+        <div class="risk-card-title">⚠️ 长护险政策复杂性</div>
+        <div class="risk-card-desc">各地长期护理险辅具报销目录和报销比例差异极大，统一查询难度高，信息不准确会造成用户期望落差。</div>
+        <div class="risk-card-solution"><strong>应对策略</strong>按城市维护独立政策数据库，政策变更时30天内更新，明确标注"政策以当地经办机构为准"，提供人工核实通道。</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+function showScene(sceneId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('scene-' + sceneId).classList.add('active');
+  document.getElementById('backBtn').classList.add('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goHome() {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('home').classList.add('active');
+  document.getElementById('backBtn').classList.remove('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
