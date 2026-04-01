@@ -81,7 +81,7 @@
 直接用浏览器打开 HTML 文件即可，无需任何构建步骤：
 
 ```bash
-git clone [https://panglezym.github.io/Overview-of-AI-Agent-Use-Cases-in-Healthcare-Retail/]
+https://panglezym.github.io/Overview-of-AI-Agent-Use-Cases-in-Healthcare-Retail/
 ```
 
 
