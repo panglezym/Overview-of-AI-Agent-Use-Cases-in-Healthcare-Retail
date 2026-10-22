@@ -78,11 +78,9 @@
 
 ## 🚀 快速开始
 
-直接用浏览器打开 HTML 文件即可，无需任何构建步骤：
+**👉 [在线预览](https://panglezym.github.io/Overview-of-AI-Agent-Use-Cases-in-Healthcare-Retail/)**
 
-```bash
-https://panglezym.github.io/Overview-of-AI-Agent-Use-Cases-in-Healthcare-Retail/
-```
+也可以下载 `index.html`，直接用浏览器打开，无需任何构建步骤。
 
 
 ---
@@ -110,7 +108,8 @@ https://panglezym.github.io/Overview-of-AI-Agent-Use-Cases-in-Healthcare-Retail/
 
 ```
 .
-└── 医疗行业零售智能体应用场景全景.html    # 主文件，全部内容自包含
+├── index.html    # 主文件，全部内容自包含
+└── README.md
 ```
 
 ---
@@ -123,4 +122,4 @@ https://panglezym.github.io/Overview-of-AI-Agent-Use-Cases-in-Healthcare-Retail/
 
 ## 📄 License
 
-MIT License — 可自由使用、修改和分发，保留署名即可。
+仅供学习交流，转载请注明出处。
